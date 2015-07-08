@@ -14,10 +14,13 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    dlgconnecttodatabase.cpp
+    dlgconnecttodatabase.cpp \
+    dlgimportcsv.cpp
 
 HEADERS  += mainwindow.h \
-    dlgconnecttodatabase.h
+    dlgconnecttodatabase.h \
+    dlgimportcsv.h
 
 FORMS    += mainwindow.ui \
-    dlgconnecttodatabase.ui
+    dlgconnecttodatabase.ui \
+    dlgimportcsv.ui

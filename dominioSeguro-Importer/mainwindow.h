@@ -15,6 +15,13 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+private slots:
+    void on_actionConnect_to_Server_triggered();
+
+    void on_actionUpload_new_data_triggered();
+
+    void on_actionValidate_Users_triggered();
+
 private:
     Ui::MainWindow *ui;
 };
