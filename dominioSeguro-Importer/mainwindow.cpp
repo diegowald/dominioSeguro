@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include "dlgconnecttodatabase.h"
 #include "dlgimportcsv.h"
+#include "dlgvalidateregistration.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -33,4 +34,8 @@ void MainWindow::on_actionUpload_new_data_triggered()
 
 void MainWindow::on_actionValidate_Users_triggered()
 {
+    DlgValidateRegistration dlg(this);
+    if (dlg.exec() == QDialog::Accepted)
+    {
+    }
 }

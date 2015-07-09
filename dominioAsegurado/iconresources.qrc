@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/buttons">
+        <file>ic_cached_black_48dp.png</file>
+    </qresource>
+    <qresource prefix="/">
+        <file>accident-128.png</file>
+        <file>crane.png</file>
+        <file>ic_call_black_48dp.png</file>
+        <file>ic_quick_contacts_dialer_black_24dp.png</file>
+        <file>ic_refresh_black_48dp.png</file>
+        <file>wrench.png</file>
+    </qresource>
+</RCC>
