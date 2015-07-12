@@ -5,7 +5,7 @@ import QtQuick.Dialogs 1.2
 
 ApplicationWindow {
     title: qsTr("Hello World")
-    width: 640
+    width: 632
     height: 480
     visible: true
 

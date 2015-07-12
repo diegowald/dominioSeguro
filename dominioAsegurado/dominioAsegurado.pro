@@ -4,24 +4,42 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = dominioAsegurado
+android: QT += androidextras  #included only in Android builds
+
+TARGET = HBO_Broker
 TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    dlgnotimplemented.cpp \
+    httprequestworker.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    dlgnotimplemented.h \
+    httprequestworker.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    dlgnotimplemented.ui
 
 CONFIG += mobility
 MOBILITY = 
 
 RESOURCES += \
     iconresources.qrc
+
+DISTFILES += \
+    android/AndroidManifest.xml \
+    android/gradle/wrapper/gradle-wrapper.jar \
+    android/gradlew \
+    android/res/values/libs.xml \
+    android/build.gradle \
+    android/gradle/wrapper/gradle-wrapper.properties \
+    android/gradlew.bat
+
+ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 

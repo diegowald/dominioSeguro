@@ -11,19 +11,25 @@ Item {
     property alias button1: button1
 
     GridLayout {
+        id: gridLayout1
         x: 0
         y: 0
         width: 539
-        rowSpacing: 20
+        rowSpacing: 0
         rows: 3
         columns: 1
         columnSpacing: 5
 
         RowLayout {
+            Layout.fillWidth: true
 
             ComboBox {
                 id: comboBox1
                 activeFocusOnPress: false
+                model: ListModel {
+                    id: model
+                    ListElement { text: "ONE518" }
+                }
             }
 
             Button {
@@ -35,7 +41,8 @@ Item {
         }
 
         RowLayout {
-            anchors.centerIn: parent
+            anchors.horizontalCenter: parent.horizontalCenter
+            Layout.fillWidth: true
 
             Button {
                 id: button1

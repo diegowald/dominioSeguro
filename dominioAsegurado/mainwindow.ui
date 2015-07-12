@@ -21,13 +21,7 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
-       <widget class="QComboBox" name="comboBox">
-        <item>
-         <property name="text">
-          <string>ONE513</string>
-         </property>
-        </item>
-       </widget>
+       <widget class="QComboBox" name="comboBox"/>
       </item>
       <item>
        <widget class="QPushButton" name="pushButton">
@@ -35,8 +29,8 @@
          <string>Get information updates</string>
         </property>
         <property name="icon">
-         <iconset>
-          <normaloff>ic_refresh_black_48dp.png</normaloff>ic_refresh_black_48dp.png</iconset>
+         <iconset resource="iconresources.qrc">
+          <normaloff>:/ic_refresh_black_48dp.png</normaloff>:/ic_refresh_black_48dp.png</iconset>
         </property>
        </widget>
       </item>
@@ -84,7 +78,7 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QLabel" name="label_6">
+       <widget class="QLabel" name="lblAsegurado">
         <property name="text">
          <string>&lt;b&gt;BOVO GUSTAVO ALEJANDRO&lt;/b&gt;</string>
         </property>
@@ -101,7 +95,7 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QLabel" name="label_8">
+       <widget class="QLabel" name="lblCobertura">
         <property name="text">
          <string>T3 - TODO RIESGO C/FRANQUICIA</string>
         </property>
@@ -115,14 +109,14 @@
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QLabel" name="label_26">
+       <widget class="QLabel" name="lblPoliza">
         <property name="text">
          <string>7857015</string>
         </property>
        </widget>
       </item>
       <item row="3" column="1">
-       <widget class="QLabel" name="label_10">
+       <widget class="QLabel" name="lblVigenciaDesde">
         <property name="text">
          <string>27/01/2015</string>
         </property>
@@ -143,7 +137,7 @@
        </widget>
       </item>
       <item row="4" column="1">
-       <widget class="QLabel" name="label_27">
+       <widget class="QLabel" name="lblVigenciaHasta">
         <property name="text">
          <string>27/02/2015</string>
         </property>
@@ -157,7 +151,7 @@
        </widget>
       </item>
       <item row="5" column="1">
-       <widget class="QLabel" name="label_13">
+       <widget class="QLabel" name="lblModelo">
         <property name="text">
          <string>PEUGEOT 208 1.5 SP ALLURE TOUCHSCREEN</string>
         </property>
@@ -171,7 +165,7 @@
        </widget>
       </item>
       <item row="6" column="1">
-       <widget class="QLabel" name="label_15">
+       <widget class="QLabel" name="lblDominio">
         <property name="text">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;ONE513&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
@@ -185,7 +179,7 @@
        </widget>
       </item>
       <item row="7" column="1">
-       <widget class="QLabel" name="label_17">
+       <widget class="QLabel" name="lblAnio">
         <property name="text">
          <string>2015</string>
         </property>
@@ -199,7 +193,7 @@
        </widget>
       </item>
       <item row="8" column="1">
-       <widget class="QLabel" name="label_19">
+       <widget class="QLabel" name="lblChasis">
         <property name="text">
          <string>936CLYFZDFB022922</string>
         </property>
@@ -213,7 +207,7 @@
        </widget>
       </item>
       <item row="9" column="1">
-       <widget class="QLabel" name="label_21">
+       <widget class="QLabel" name="lblMotor">
         <property name="text">
          <string>10DBSZC001278</string>
         </property>
@@ -227,7 +221,7 @@
        </widget>
       </item>
       <item row="10" column="1">
-       <widget class="QLabel" name="label_23">
+       <widget class="QLabel" name="lblMedioPago">
         <property name="text">
          <string>VISA</string>
         </property>
@@ -241,7 +235,7 @@
        </widget>
       </item>
       <item row="11" column="1">
-       <widget class="QLabel" name="label_25">
+       <widget class="QLabel" name="lblProductor">
         <property name="text">
          <string>HBO BROKER</string>
         </property>
@@ -270,8 +264,8 @@
          <string>Crane</string>
         </property>
         <property name="icon">
-         <iconset>
-          <normaloff>crane.png</normaloff>crane.png</iconset>
+         <iconset resource="iconresources.qrc">
+          <normaloff>:/crane.png</normaloff>:/crane.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -287,8 +281,8 @@
          <string>Crash</string>
         </property>
         <property name="icon">
-         <iconset>
-          <normaloff>accident-128.png</normaloff>accident-128.png</iconset>
+         <iconset resource="iconresources.qrc">
+          <normaloff>:/accident-128.png</normaloff>:/accident-128.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -304,8 +298,8 @@
          <string>Information</string>
         </property>
         <property name="icon">
-         <iconset>
-          <normaloff>ic_quick_contacts_dialer_black_24dp.png</normaloff>ic_quick_contacts_dialer_black_24dp.png</iconset>
+         <iconset resource="iconresources.qrc">
+          <normaloff>:/ic_call_black_48dp.png</normaloff>:/ic_call_black_48dp.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -321,6 +315,8 @@
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="iconresources.qrc"/>
+ </resources>
  <connections/>
 </ui>
