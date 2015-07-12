@@ -1,5 +1,7 @@
 # dominioSeguro
 
+Set de herramientas para la aplicacion movil para visualizacion de comprobantes de pago de seguros.
+
 usefull links
 
 https://www.ibm.com/developerworks/library/x-slim-rest/
