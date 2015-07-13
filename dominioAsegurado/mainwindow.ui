@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>499</width>
+    <width>571</width>
     <height>480</height>
    </rect>
   </property>
@@ -24,7 +24,7 @@
        <widget class="QComboBox" name="comboBox"/>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="btnUpdate">
         <property name="text">
          <string>Get information updates</string>
         </property>
@@ -259,7 +259,7 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <widget class="QPushButton" name="pushButton_3">
+       <widget class="QPushButton" name="btnCallForCrane">
         <property name="text">
          <string>Crane</string>
         </property>
@@ -276,7 +276,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_4">
+       <widget class="QPushButton" name="btnCallForCrash">
         <property name="text">
          <string>Crash</string>
         </property>
@@ -293,7 +293,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_5">
+       <widget class="QPushButton" name="btnCallForInformation">
         <property name="text">
          <string>Information</string>
         </property>

@@ -57,60 +57,6 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_pushButton_3_clicked()
-{
-    QString number = "2914139389";
-    QAndroidJniObject activity = QAndroidJniObject::callStaticObjectMethod("org/qtproject/qt5/android/QtNative", "activity", "()Landroid/app/Activity;");
-    if (activity.isValid())
-    {
-        // real Java code to C++ code
-        // Intent callIntent = new callIntent(Intent.ACTION_CALL);
-        QAndroidJniObject callConstant = QAndroidJniObject::getStaticObjectField<jstring>("android/content/Intent", "ACTION_CALL");
-        QAndroidJniObject callIntent("android/content/Intent",  "(Ljava/lang/String;)V", callConstant.object());
-        // callIntent.setPackage("com.android.phone"); (<= 4.4w)  intent.setPackage("com.android.server.telecom");  (>= 5)
-        QAndroidJniObject package;
-        if(QtAndroid::androidSdkVersion() >= 21)
-            package = QAndroidJniObject::fromString("com.android.server.telecom");
-        else
-            package = QAndroidJniObject::fromString("com.android.phone");
-        callIntent.callObjectMethod("setPackage", "(Ljava/lang/String;)Landroid/content/Intent;", package.object<jstring>());
-        // callIntent.setData(Uri.parse("tel:" + number));
-        QAndroidJniObject jNumber = QAndroidJniObject::fromString(QString("tel:%1").arg(number));
-        QAndroidJniObject uri = QAndroidJniObject::callStaticObjectMethod("android/net/Uri","parse","(Ljava/lang/String;)Landroid/net/Uri;", jNumber.object());
-        callIntent.callObjectMethod("setData", "(Landroid/net/Uri;)Landroid/content/Intent;", uri.object<jobject>());
-        // callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        jint flag = QAndroidJniObject::getStaticField<jint>("android/content/Intent", "FLAG_ACTIVITY_NEW_TASK");
-        callIntent.callObjectMethod("setFlags", "(I)Landroid/content/Intent;", flag);
-        //startActivity(callIntent);
-        activity.callMethod<void>("startActivity","(Landroid/content/Intent;)V", callIntent.object<jobject>());
-    }
-    else
-        qDebug() << "Something wrong with Qt activity...";
-}
-
-void MainWindow::on_pushButton_4_clicked()
-{
-    DlgNotImplemented dlg(this);
-    dlg.exec();
-}
-
-void MainWindow::on_pushButton_5_clicked()
-{
-    DlgNotImplemented dlg(this);
-    dlg.exec();
-}
-
-void MainWindow::on_pushButton_clicked()
-{
-    QString url_str = "http://192.168.0.103/slim/datos/22943587";
-
-    HttpRequestInput input(url_str, "GET");
-
-    HttpRequestWorker *worker = new HttpRequestWorker(this);
-    connect(worker, SIGNAL(on_execution_finished(HttpRequestWorker*)), this, SLOT(handle_result(HttpRequestWorker*)));
-    worker->execute(&input);
-}
-
 void MainWindow::on_comboBox_currentIndexChanged(const QString &arg1)
 {
     QJsonObject jsonObj = dominiosAsegurados[arg1];
@@ -163,4 +109,58 @@ void MainWindow::loadJson(QJsonDocument &jsonDoc)
             ui->comboBox->addItem(jsonObj["dominio"].toString(), jsonObj);
         }
     }
+}
+
+void MainWindow::on_btnUpdate_clicked()
+{
+    QString url_str = "http://192.168.0.103/slim/datos/22943587";
+
+    HttpRequestInput input(url_str, "GET");
+
+    HttpRequestWorker *worker = new HttpRequestWorker(this);
+    connect(worker, SIGNAL(on_execution_finished(HttpRequestWorker*)), this, SLOT(handle_result(HttpRequestWorker*)));
+    worker->execute(&input);
+}
+
+void MainWindow::on_btnCallForCrane_clicked()
+{
+    QString number = "2914139389";
+    QAndroidJniObject activity = QAndroidJniObject::callStaticObjectMethod("org/qtproject/qt5/android/QtNative", "activity", "()Landroid/app/Activity;");
+    if (activity.isValid())
+    {
+        // real Java code to C++ code
+        // Intent callIntent = new callIntent(Intent.ACTION_CALL);
+        QAndroidJniObject callConstant = QAndroidJniObject::getStaticObjectField<jstring>("android/content/Intent", "ACTION_CALL");
+        QAndroidJniObject callIntent("android/content/Intent",  "(Ljava/lang/String;)V", callConstant.object());
+        // callIntent.setPackage("com.android.phone"); (<= 4.4w)  intent.setPackage("com.android.server.telecom");  (>= 5)
+        QAndroidJniObject package;
+        if(QtAndroid::androidSdkVersion() >= 21)
+            package = QAndroidJniObject::fromString("com.android.server.telecom");
+        else
+            package = QAndroidJniObject::fromString("com.android.phone");
+        callIntent.callObjectMethod("setPackage", "(Ljava/lang/String;)Landroid/content/Intent;", package.object<jstring>());
+        // callIntent.setData(Uri.parse("tel:" + number));
+        QAndroidJniObject jNumber = QAndroidJniObject::fromString(QString("tel:%1").arg(number));
+        QAndroidJniObject uri = QAndroidJniObject::callStaticObjectMethod("android/net/Uri","parse","(Ljava/lang/String;)Landroid/net/Uri;", jNumber.object());
+        callIntent.callObjectMethod("setData", "(Landroid/net/Uri;)Landroid/content/Intent;", uri.object<jobject>());
+        // callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        jint flag = QAndroidJniObject::getStaticField<jint>("android/content/Intent", "FLAG_ACTIVITY_NEW_TASK");
+        callIntent.callObjectMethod("setFlags", "(I)Landroid/content/Intent;", flag);
+        //startActivity(callIntent);
+        activity.callMethod<void>("startActivity","(Landroid/content/Intent;)V", callIntent.object<jobject>());
+    }
+    else
+        qDebug() << "Something wrong with Qt activity...";
+}
+
+void MainWindow::on_btnCallForCrash_clicked()
+{
+    DlgNotImplemented dlg(this);
+    dlg.exec();
+}
+
+void MainWindow::on_btnCallForInformation_clicked()
+{
+    DlgNotImplemented dlg(this);
+    dlg.exec();
 }
