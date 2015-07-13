@@ -17,14 +17,17 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     dlgnotimplemented.cpp \
-    httprequestworker.cpp
+    httprequestworker.cpp \
+    dlgregistration.cpp
 
 HEADERS  += mainwindow.h \
     dlgnotimplemented.h \
-    httprequestworker.h
+    httprequestworker.h \
+    dlgregistration.h
 
 FORMS    += mainwindow.ui \
-    dlgnotimplemented.ui
+    dlgnotimplemented.ui \
+    dlgregistration.ui
 
 CONFIG += mobility
 MOBILITY = 
