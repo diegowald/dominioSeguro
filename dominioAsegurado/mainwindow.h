@@ -21,6 +21,7 @@ public:
 
 private:
     void loadJson(QJsonDocument &jsonDoc);
+    void loadJsonSettings(QJsonDocument &jsonDoc);
 private slots:
 
     void on_comboBox_currentIndexChanged(const QString &arg1);
@@ -37,7 +38,9 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QMap<QString, QJsonObject> dominiosAsegurados;
-    QString fileLocation;
+    QString _fileDataLocation;
+    QString _settingsLocation;
+    QString _dniAsociado;
 };
 
 #endif // MAINWINDOW_H

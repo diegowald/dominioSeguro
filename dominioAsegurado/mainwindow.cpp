@@ -36,20 +36,36 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->lblVigenciaHasta->clear();
     ui->comboBox->clear();
     dominiosAsegurados.clear();
-    fileLocation = QString("%1/%2")
+    _fileDataLocation = QString("%1/%2")
             .arg(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation))
             .arg("data.json");
-    if (!fileLocation.isEmpty())
+    if (!_fileDataLocation.isEmpty())
     {
-        QFile jsonFile(fileLocation);
+        QFile jsonFile(_fileDataLocation);
         jsonFile.open(QFile::ReadOnly);
         QJsonDocument jsonDoc = QJsonDocument().fromJson(jsonFile.readAll());
         loadJson(jsonDoc);
     }
     else
     {
-        fileLocation = QStandardPaths::locate(QStandardPaths::AppLocalDataLocation, "data", QStandardPaths::LocateOption::LocateDirectory);
+        _fileDataLocation = QStandardPaths::locate(QStandardPaths::AppLocalDataLocation, "data", QStandardPaths::LocateOption::LocateDirectory);
     }
+
+    _settingsLocation = QString("%1/%2")
+            .arg(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation))
+            .arg("settings.json");
+    if (!_fileDataLocation.isEmpty())
+    {
+        QFile jsonFile(_settingsLocation);
+        jsonFile.open(QFile::ReadOnly);
+        QJsonDocument jsonDoc = QJsonDocument().fromJson(jsonFile.readAll());
+        loadJsonSettings(jsonDoc);
+    }
+    else
+    {
+        _settingsLocation = QStandardPaths::locate(QStandardPaths::AppLocalDataLocation, "data", QStandardPaths::LocateOption::LocateDirectory);
+    }
+
 }
 
 MainWindow::~MainWindow()
@@ -86,7 +102,7 @@ void MainWindow::handle_result(HttpRequestWorker *worker)
 
         QJsonDocument jsonDoc = QJsonDocument::fromJson(response);
         loadJson(jsonDoc);
-        QFile jsonFile(fileLocation);
+        QFile jsonFile(_fileDataLocation);
         jsonFile.open(QFile::WriteOnly);
         jsonFile.write(jsonDoc.toJson());
     }
@@ -111,15 +127,32 @@ void MainWindow::loadJson(QJsonDocument &jsonDoc)
     }
 }
 
+void MainWindow::loadJsonSettings(QJsonDocument &jsonDoc)
+{
+    if (jsonDoc.isObject())
+    {
+        QJsonObject jsonObj = jsonDoc.object();
+        _dniAsociado = jsonObj["dni"].toString();
+    }
+}
+
+
 void MainWindow::on_btnUpdate_clicked()
 {
-    QString url_str = "http://192.168.0.103/slim/datos/22943587";
+    if (_dniAsociado.length() == 0)
+    {
+        registrar();
+    }
+    else
+    {
+        QString url_str = "http://192.168.0.103/slim/datos/" + _dniAsociado;
 
-    HttpRequestInput input(url_str, "GET");
+        HttpRequestInput input(url_str, "GET");
 
-    HttpRequestWorker *worker = new HttpRequestWorker(this);
-    connect(worker, SIGNAL(on_execution_finished(HttpRequestWorker*)), this, SLOT(handle_result(HttpRequestWorker*)));
-    worker->execute(&input);
+        HttpRequestWorker *worker = new HttpRequestWorker(this);
+        connect(worker, SIGNAL(on_execution_finished(HttpRequestWorker*)), this, SLOT(handle_result(HttpRequestWorker*)));
+        worker->execute(&input);
+    }
 }
 
 void MainWindow::on_btnCallForCrane_clicked()
