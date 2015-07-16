@@ -22,6 +22,8 @@ public:
 private:
     void loadJson(QJsonDocument &jsonDoc);
     void loadJsonSettings(QJsonDocument &jsonDoc);
+
+    void registrar();
 private slots:
 
     void on_comboBox_currentIndexChanged(const QString &arg1);

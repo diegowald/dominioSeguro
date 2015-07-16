@@ -12,6 +12,7 @@
 #include <QJsonObject>
 
 #include "dlgnotimplemented.h"
+#include "dlgregistration.h"
 
 #include <QMessageBox>
 #include <QStandardPaths>
@@ -195,5 +196,12 @@ void MainWindow::on_btnCallForCrash_clicked()
 void MainWindow::on_btnCallForInformation_clicked()
 {
     DlgNotImplemented dlg(this);
+    dlg.exec();
+}
+
+
+void MainWindow::registrar()
+{
+    DlgRegistration dlg(this);
     dlg.exec();
 }
