@@ -18,6 +18,8 @@
 #include <QStandardPaths>
 #include <QFile>
 
+#define DEMO
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -55,7 +57,7 @@ MainWindow::MainWindow(QWidget *parent) :
     _settingsLocation = QString("%1/%2")
             .arg(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation))
             .arg("settings.json");
-    if (!_fileDataLocation.isEmpty())
+    if (!_settingsLocation.isEmpty())
     {
         QFile jsonFile(_settingsLocation);
         jsonFile.open(QFile::ReadOnly);
@@ -66,7 +68,11 @@ MainWindow::MainWindow(QWidget *parent) :
     {
         _settingsLocation = QStandardPaths::locate(QStandardPaths::AppLocalDataLocation, "data", QStandardPaths::LocateOption::LocateDirectory);
     }
-
+#ifdef DEMO
+    ui->lblDemo->setText("DEMO");
+#else
+    ui->lblDemo->clear();
+#endif
 }
 
 MainWindow::~MainWindow()
@@ -91,7 +97,7 @@ void MainWindow::on_comboBox_currentIndexChanged(const QString &arg1)
     ui->lblProductor->setText(jsonObj["Productor"].toString());
 }
 
-void MainWindow::handle_result(HttpRequestWorker *worker)
+void MainWindow::handle_resultUpdate(HttpRequestWorker *worker)
 {
     if (worker->error_type == QNetworkReply::NoError)
     {
@@ -130,9 +136,9 @@ void MainWindow::loadJson(QJsonDocument &jsonDoc)
 
 void MainWindow::loadJsonSettings(QJsonDocument &jsonDoc)
 {
-    if (jsonDoc.isObject())
+    if (jsonDoc.isArray())
     {
-        QJsonObject jsonObj = jsonDoc.object();
+        QJsonObject jsonObj = jsonDoc.array().at(0).toObject();
         _dniAsociado = jsonObj["dni"].toString();
     }
 }
@@ -146,13 +152,25 @@ void MainWindow::on_btnUpdate_clicked()
     }
     else
     {
+#ifdef DEMO
+        QString json = "[{\"id\":\"1\",\"dni\":\"22943587\",\"dominio\":\"ESK624\",\"asegurado\":\"diego\",\"cobertura\":\"w\",\"poliza\":\"asd\",\"vigencia_desde\":\"1\/1\/2015\",\"vigencia_hasta\":\"31\/12\/2015\",\"modelo\":\"ads\",\"anio\":\"asd\",\"chasis\":\"qe\",\"motor\":\"qwe\",\"medioPago\":\"qwe\",\"Productor\":\"qwe\"},{\"id\":\"2\",\"dni\":\"22943587\",\"dominio\":\"qwe\",\"asegurado\":\"diego\",\"cobertura\":\"654\",\"poliza\":\"89\",\"vigencia_desde\":\"654\",\"vigencia_hasta\":\"89\",\"modelo\":\"684\",\"anio\":\"684\",\"chasis\":\"684\",\"motor\":\"684\",\"medioPago\":\"684\",\"Productor\":\"648\"}]";
+        ui->comboBox->clear();
+        dominiosAsegurados.clear();
+
+        QJsonDocument jsonDoc = QJsonDocument::fromJson(json.toUtf8());
+        loadJson(jsonDoc);
+        QFile jsonFile(_fileDataLocation);
+        jsonFile.open(QFile::WriteOnly);
+        jsonFile.write(jsonDoc.toJson());
+#else
         QString url_str = "http://192.168.0.103/slim/datos/" + _dniAsociado;
 
         HttpRequestInput input(url_str, "GET");
 
         HttpRequestWorker *worker = new HttpRequestWorker(this);
-        connect(worker, SIGNAL(on_execution_finished(HttpRequestWorker*)), this, SLOT(handle_result(HttpRequestWorker*)));
+        connect(worker, SIGNAL(on_execution_finished(HttpRequestWorker*)), this, SLOT(handle_resultUpdate(HttpRequestWorker*)));
         worker->execute(&input);
+#endif
     }
 }
 
@@ -202,6 +220,52 @@ void MainWindow::on_btnCallForInformation_clicked()
 
 void MainWindow::registrar()
 {
-    DlgRegistration dlg(this);
-    dlg.exec();
+    DlgRegistration dlg(false, this);
+    if (dlg.exec() == QDialog::Accepted)
+    {
+#ifdef DEMO
+       QString json = "[{\"id\": \"1\", \"dni\": \"22943587\", \"celular\": \"2914139389\", \"nombre\": \"diego\", \"fecha_solicitud\": \"2015-07-18\", \"fecha_registracion\": null }]";
+       QJsonDocument jsonDoc = QJsonDocument::fromJson(json.toUtf8());
+       loadJsonSettings(jsonDoc);
+       QFile jsonFile(_settingsLocation);
+       jsonFile.open(QFile::WriteOnly);
+       jsonFile.write(jsonDoc.toJson());
+       on_btnUpdate_clicked();
+#else
+        QString url_str = "http://192.168.0.103/slim/register";
+
+        HttpRequestInput input(url_str, "POST");
+
+        input.add_var("dni", dlg.dni());
+        input.add_var("celular", "");
+        input.add_var("nombre", dlg.nombre());
+        input.add_var("fechaSolicitud", QDate::currentDate().toString("yyyy-MM-dd"));
+
+        HttpRequestWorker *worker = new HttpRequestWorker(this);
+        connect(worker, SIGNAL(on_execution_finished(HttpRequestWorker*)), this, SLOT(handle_resultRegistration(HttpRequestWorker*)));
+        worker->execute(&input);
+#endif
+    }
+}
+
+void MainWindow::handle_resultRegistration(HttpRequestWorker *worker)
+{
+    if (worker->error_type == QNetworkReply::NoError)
+    {
+        // communication was successful
+        QByteArray response = worker->response;
+
+        QJsonDocument jsonDoc = QJsonDocument::fromJson(response);
+        loadJsonSettings(jsonDoc);
+        QFile jsonFile(_settingsLocation);
+        jsonFile.open(QFile::WriteOnly);
+        jsonFile.write(jsonDoc.toJson());
+        on_btnUpdate_clicked();
+    }
+    else
+    {
+        // an error occurred
+        QString msg = "Error: " + worker->error_str;
+        QMessageBox::information(this, "", msg);
+    }
 }

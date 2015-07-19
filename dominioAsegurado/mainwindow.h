@@ -28,7 +28,8 @@ private slots:
 
     void on_comboBox_currentIndexChanged(const QString &arg1);
     
-    void handle_result(HttpRequestWorker *worker);
+    void handle_resultUpdate(HttpRequestWorker *worker);
+    void handle_resultRegistration(HttpRequestWorker *worker);
     void on_btnUpdate_clicked();
 
     void on_btnCallForCrane_clicked();

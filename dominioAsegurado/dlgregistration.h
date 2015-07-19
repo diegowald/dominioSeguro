@@ -12,11 +12,17 @@ class DlgRegistration : public QDialog
     Q_OBJECT
 
 public:
-    explicit DlgRegistration(QWidget *parent = 0);
+    explicit DlgRegistration(bool demoMode, QWidget *parent = 0);
     ~DlgRegistration();
+
+    QString dni() const;
+    QString nombre() const;
+
+private slots:
 
 private:
     Ui::DlgRegistration *ui;
+    bool _demoMode;
 };
 
 #endif // DLGREGISTRATION_H
