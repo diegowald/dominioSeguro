@@ -42,16 +42,16 @@ $app->post('/register', function() use ($app) {
   try {
     // get and decode JSON request body
     $request = $app->request();
-    $body = $request->getBody();
-    $input = json_decode($body);
+    $post = $request->post();
+    $input = $post;
 
     // store registration form
     $regForm = R::dispense('registracion');
-    $regForm->dni = (string)$input->dni;
-    $regForm->celular = (string)$input->celular;
-    $regForm->nombre = (string)$input->nombre;
-    $regForm->fechaSolicitud = (string)$input->fechaSolicitud;
-    $regForm->fechaRegistracion = '';
+    $regForm->dni = (string)$input['dni'];
+    $regForm->celular = (string)$input['celular'];
+    $regForm->nombre = (string)$input['nombre'];
+    $regForm->fechaSolicitud = (string)$input['fechaSolicitud'];
+    $regForm->fechaRegistracion = null;
     $id = R::store($regForm);
 
     // return JSON-encoded response body
