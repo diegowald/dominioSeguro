@@ -9,7 +9,7 @@ require 'rb.php';
 \Slim\Slim::registerAutoloader();
 
 // set up database connection
-R::setup('mysql:host=127.0.0.1;dbname=HBO;port=3306', 'dev', 'dev');
+R::setup('mysql:host=192.168.0.58;dbname=hbobroker_db;port=3306', 'hbo_mobile', 'hbo_mobile');
 R::freeze(true);
 
 // initialize app
