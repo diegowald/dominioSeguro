@@ -6,6 +6,7 @@
 #include <QMap>
 #include <QJsonObject>
 #include <QJsonDocument>
+#include "screentools.h"
 
 namespace Ui {
 class MainWindow;
@@ -42,6 +43,7 @@ private:
     QString _fileDataLocation;
     QString _settingsLocation;
     QString _dniAsociado;
+    ScreenTools _screenTools;
 };
 
 #endif // MAINWINDOW_H

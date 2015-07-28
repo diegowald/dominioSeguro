@@ -18,7 +18,7 @@
 #include <QStandardPaths>
 #include <QFile>
 
-#define DEMO
+//#define DEMO
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -96,6 +96,14 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->btnCrash->setStyleSheet(s);
     ui->btnFeedback->setStyleSheet(s);
     ui->btnInformation->setStyleSheet(s);
+    QSize sz;
+    sz.setWidth(_screenTools.mm2pix(8));
+    sz.setHeight(_screenTools.mm2pix(8));
+    ui->btnCrane->setIconSize(sz);
+    ui->btnCrash->setIconSize(sz);
+    ui->btnFeedback->setIconSize(sz);
+    ui->btnInformation->setIconSize(sz);
+    ui->btnGetInformationUpdates->setIconSize(sz);
 }
 
 MainWindow::~MainWindow()

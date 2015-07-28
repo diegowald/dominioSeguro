@@ -18,12 +18,14 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     dlgnotimplemented.cpp \
     httprequestworker.cpp \
-    dlgregistration.cpp
+    dlgregistration.cpp \
+    screentools.cpp
 
 HEADERS  += mainwindow.h \
     dlgnotimplemented.h \
     httprequestworker.h \
-    dlgregistration.h
+    dlgregistration.h \
+    screentools.h
 
 FORMS    += mainwindow.ui \
     dlgnotimplemented.ui \
