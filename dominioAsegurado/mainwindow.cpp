@@ -25,18 +25,20 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    ui->lblAnio->clear();
     ui->lblAsegurado->clear();
-    ui->lblChasis->clear();
+    ui->lblCompania->clear();
     ui->lblCobertura->clear();
-    ui->lblDominio->clear();
-    ui->lblMedioPago->clear();
-    ui->lblModelo->clear();
-    ui->lblMotor->clear();
     ui->lblPoliza->clear();
-    ui->lblProductor->clear();
     ui->lblVigenciaDesde->clear();
     ui->lblVigenciaHasta->clear();
+    ui->lblMarca->clear();
+    ui->lblModelo->clear();
+    ui->lblDominio->clear();
+    ui->lblAnio->clear();
+    ui->lblChasis->clear();
+    ui->lblMotor->clear();
+    ui->lblMedioPago->clear();
+    ui->lblProductor->clear();
     ui->comboBox->clear();
     dominiosAsegurados.clear();
     _fileDataLocation = QString("%1/%2")
@@ -69,10 +71,31 @@ MainWindow::MainWindow(QWidget *parent) :
         _settingsLocation = QStandardPaths::locate(QStandardPaths::AppLocalDataLocation, "data", QStandardPaths::LocateOption::LocateDirectory);
     }
 #ifdef DEMO
-    ui->lblDemo->setText("DEMO");
-#else
-    ui->lblDemo->clear();
+    ui->lblTitle->setText(ui->lblTitle->text() + "DEMO");
 #endif
+
+    QString s = "QLabel { background-color : white; color : black; }";
+    ui->lblTitle->setStyleSheet(s);
+    ui->lblAsegurado->setStyleSheet(s);
+    ui->lblCompania->setStyleSheet(s);
+    ui->lblCobertura->setStyleSheet(s);
+    ui->lblPoliza->setStyleSheet(s);
+    ui->lblVigenciaDesde->setStyleSheet(s);
+    ui->lblVigenciaHasta->setStyleSheet(s);
+    ui->lblMarca->setStyleSheet(s);
+    ui->lblModelo->setStyleSheet(s);
+    ui->lblDominio->setStyleSheet(s);
+    ui->lblAnio->setStyleSheet(s);
+    ui->lblChasis->setStyleSheet(s);
+    ui->lblMotor->setStyleSheet(s);
+    ui->lblMedioPago->setStyleSheet(s);
+    ui->lblProductor->setStyleSheet(s);
+
+    s = "QToolButton { background-color : yellow; color : black; }";
+    ui->btnCrane->setStyleSheet(s);
+    ui->btnCrash->setStyleSheet(s);
+    ui->btnFeedback->setStyleSheet(s);
+    ui->btnInformation->setStyleSheet(s);
 }
 
 MainWindow::~MainWindow()
@@ -144,7 +167,63 @@ void MainWindow::loadJsonSettings(QJsonDocument &jsonDoc)
 }
 
 
-void MainWindow::on_btnUpdate_clicked()
+
+
+
+void MainWindow::registrar()
+{
+    DlgRegistration dlg(false, this);
+    if (dlg.exec() == QDialog::Accepted)
+    {
+#ifdef DEMO
+        QString json = "[{\"id\": \"1\", \"dni\": \"22943587\", \"celular\": \"2914139389\", \"nombre\": \"diego\", \"fecha_solicitud\": \"2015-07-18\", \"fecha_registracion\": null }]";
+        QJsonDocument jsonDoc = QJsonDocument::fromJson(json.toUtf8());
+        loadJsonSettings(jsonDoc);
+        QFile jsonFile(_settingsLocation);
+        jsonFile.open(QFile::WriteOnly);
+        jsonFile.write(jsonDoc.toJson());
+        on_btnGetInformationUpdates_pressed();
+#else
+        QString url_str = "http://www.hbobroker.com.ar/smartcard"
+                          "/register";
+
+        HttpRequestInput input(url_str, "POST");
+
+        input.add_var("dni", dlg.dni());
+        input.add_var("celular", "");
+        input.add_var("nombre", dlg.nombre());
+        input.add_var("fechaSolicitud", QDate::currentDate().toString("yyyy-MM-dd"));
+
+        HttpRequestWorker *worker = new HttpRequestWorker(this);
+        connect(worker, SIGNAL(on_execution_finished(HttpRequestWorker*)), this, SLOT(handle_resultRegistration(HttpRequestWorker*)));
+        worker->execute(&input);
+#endif
+    }
+}
+
+void MainWindow::handle_resultRegistration(HttpRequestWorker *worker)
+{
+    if (worker->error_type == QNetworkReply::NoError)
+    {
+        // communication was successful
+        QByteArray response = worker->response;
+
+        QJsonDocument jsonDoc = QJsonDocument::fromJson(response);
+        loadJsonSettings(jsonDoc);
+        QFile jsonFile(_settingsLocation);
+        jsonFile.open(QFile::WriteOnly);
+        jsonFile.write(jsonDoc.toJson());
+        on_btnGetInformationUpdates_pressed();
+    }
+    else
+    {
+        // an error occurred
+        QString msg = "Error: " + worker->error_str;
+        QMessageBox::information(this, "", msg);
+    }
+}
+
+void MainWindow::on_btnGetInformationUpdates_pressed()
 {
     if (_dniAsociado.length() == 0)
     {
@@ -163,7 +242,7 @@ void MainWindow::on_btnUpdate_clicked()
         jsonFile.open(QFile::WriteOnly);
         jsonFile.write(jsonDoc.toJson());
 #else
-        QString url_str = "http://192.168.0.103/slim/datos/" + _dniAsociado;
+        QString url_str = "http://www.hbobroker.com.ar/smartcard/datos/" + _dniAsociado;
 
         HttpRequestInput input(url_str, "GET");
 
@@ -174,7 +253,7 @@ void MainWindow::on_btnUpdate_clicked()
     }
 }
 
-void MainWindow::on_btnCallForCrane_clicked()
+void MainWindow::on_btnCrane_pressed()
 {
     QString number = "2914139389";
     QAndroidJniObject activity = QAndroidJniObject::callStaticObjectMethod("org/qtproject/qt5/android/QtNative", "activity", "()Landroid/app/Activity;");
@@ -205,67 +284,21 @@ void MainWindow::on_btnCallForCrane_clicked()
         qDebug() << "Something wrong with Qt activity...";
 }
 
-void MainWindow::on_btnCallForCrash_clicked()
-{
-    DlgNotImplemented dlg(this);
-    dlg.exec();
-}
-
-void MainWindow::on_btnCallForInformation_clicked()
+void MainWindow::on_btnCrash_pressed()
 {
     DlgNotImplemented dlg(this);
     dlg.exec();
 }
 
 
-void MainWindow::registrar()
+void MainWindow::on_btnFeedback_pressed()
 {
-    DlgRegistration dlg(false, this);
-    if (dlg.exec() == QDialog::Accepted)
-    {
-#ifdef DEMO
-       QString json = "[{\"id\": \"1\", \"dni\": \"22943587\", \"celular\": \"2914139389\", \"nombre\": \"diego\", \"fecha_solicitud\": \"2015-07-18\", \"fecha_registracion\": null }]";
-       QJsonDocument jsonDoc = QJsonDocument::fromJson(json.toUtf8());
-       loadJsonSettings(jsonDoc);
-       QFile jsonFile(_settingsLocation);
-       jsonFile.open(QFile::WriteOnly);
-       jsonFile.write(jsonDoc.toJson());
-       on_btnUpdate_clicked();
-#else
-        QString url_str = "http://192.168.0.103/slim/register";
-
-        HttpRequestInput input(url_str, "POST");
-
-        input.add_var("dni", dlg.dni());
-        input.add_var("celular", "");
-        input.add_var("nombre", dlg.nombre());
-        input.add_var("fechaSolicitud", QDate::currentDate().toString("yyyy-MM-dd"));
-
-        HttpRequestWorker *worker = new HttpRequestWorker(this);
-        connect(worker, SIGNAL(on_execution_finished(HttpRequestWorker*)), this, SLOT(handle_resultRegistration(HttpRequestWorker*)));
-        worker->execute(&input);
-#endif
-    }
+    DlgNotImplemented dlg(this);
+    dlg.exec();
 }
 
-void MainWindow::handle_resultRegistration(HttpRequestWorker *worker)
+void MainWindow::on_btnInformation_pressed()
 {
-    if (worker->error_type == QNetworkReply::NoError)
-    {
-        // communication was successful
-        QByteArray response = worker->response;
-
-        QJsonDocument jsonDoc = QJsonDocument::fromJson(response);
-        loadJsonSettings(jsonDoc);
-        QFile jsonFile(_settingsLocation);
-        jsonFile.open(QFile::WriteOnly);
-        jsonFile.write(jsonDoc.toJson());
-        on_btnUpdate_clicked();
-    }
-    else
-    {
-        // an error occurred
-        QString msg = "Error: " + worker->error_str;
-        QMessageBox::information(this, "", msg);
-    }
+    DlgNotImplemented dlg(this);
+    dlg.exec();
 }

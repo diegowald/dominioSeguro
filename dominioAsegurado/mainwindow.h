@@ -30,13 +30,11 @@ private slots:
     
     void handle_resultUpdate(HttpRequestWorker *worker);
     void handle_resultRegistration(HttpRequestWorker *worker);
-    void on_btnUpdate_clicked();
-
-    void on_btnCallForCrane_clicked();
-
-    void on_btnCallForCrash_clicked();
-
-    void on_btnCallForInformation_clicked();
+    void on_btnGetInformationUpdates_pressed();
+    void on_btnCrane_pressed();
+    void on_btnCrash_pressed();
+    void on_btnFeedback_pressed();
+    void on_btnInformation_pressed();
 
 private:
     Ui::MainWindow *ui;

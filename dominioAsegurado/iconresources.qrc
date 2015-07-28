@@ -9,5 +9,9 @@
         <file>ic_quick_contacts_dialer_black_24dp.png</file>
         <file>ic_refresh_black_48dp.png</file>
         <file>wrench.png</file>
+        <file alias="choque">choque..png</file>
+        <file alias="feedback">feedback.png</file>
+        <file alias="grua">grua.png</file>
+        <file alias="info">info.png</file>
     </qresource>
 </RCC>
