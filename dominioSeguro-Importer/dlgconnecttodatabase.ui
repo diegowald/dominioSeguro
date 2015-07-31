@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>239</width>
-    <height>146</height>
+    <width>249</width>
+    <height>175</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,12 +22,12 @@
         <string>Server</string>
        </property>
        <property name="buddy">
-        <cstring>lineEdit</cstring>
+        <cstring>txtServer</cstring>
        </property>
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QLineEdit" name="lineEdit"/>
+      <widget class="QLineEdit" name="txtServer"/>
      </item>
      <item row="1" column="0">
       <widget class="QLabel" name="label_2">
@@ -35,12 +35,12 @@
         <string>User</string>
        </property>
        <property name="buddy">
-        <cstring>lineEdit_2</cstring>
+        <cstring>txtUser</cstring>
        </property>
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QLineEdit" name="lineEdit_2"/>
+      <widget class="QLineEdit" name="txtUser"/>
      </item>
      <item row="2" column="0">
       <widget class="QLabel" name="label_3">
@@ -48,12 +48,22 @@
         <string>Password</string>
        </property>
        <property name="buddy">
-        <cstring>lineEdit_3</cstring>
+        <cstring>txtPassword</cstring>
        </property>
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="QLineEdit" name="lineEdit_3"/>
+      <widget class="QLineEdit" name="txtPassword"/>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Database</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QLineEdit" name="txtDatabase"/>
      </item>
     </layout>
    </item>

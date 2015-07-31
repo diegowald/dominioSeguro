@@ -15,6 +15,10 @@ public:
     explicit DlgConnectToDatabase(QWidget *parent = 0);
     ~DlgConnectToDatabase();
 
+    QString server() const;
+    QString database() const;
+    QString user() const;
+    QString password() const;
 private:
     Ui::DlgConnectToDatabase *ui;
 };

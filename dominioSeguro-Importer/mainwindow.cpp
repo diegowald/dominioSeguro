@@ -6,7 +6,8 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow), _server(""), _database(""),
+    _user(""), _password("")
 {
     ui->setupUi(this);
 }
@@ -21,6 +22,10 @@ void MainWindow::on_actionConnect_to_Server_triggered()
     DlgConnectToDatabase dlg(this);
     if (dlg.exec() == QDialog::Accepted)
     {
+        _server = dlg.server();
+        _database = dlg.database();
+        _user = dlg.user();
+        _password = dlg.password();
     }
 }
 

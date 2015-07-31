@@ -24,6 +24,11 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+
+    QString _server;
+    QString _database;
+    QString _user;
+    QString _password;
 };
 
 #endif // MAINWINDOW_H
