@@ -15,6 +15,9 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+private:
+    void uploadData();
+
 private slots:
     void on_actionConnect_to_Server_triggered();
 
@@ -29,6 +32,13 @@ private:
     QString _database;
     QString _user;
     QString _password;
+
+    QString _filename;
+    QString _columnSeparator;
+    QString _stringDelimiter;
+    QString _recordSeparator;
+    int _numLinesToIgnore;
+
 };
 
 #endif // MAINWINDOW_H

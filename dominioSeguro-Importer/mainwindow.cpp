@@ -3,6 +3,8 @@
 #include "dlgconnecttodatabase.h"
 #include "dlgimportcsv.h"
 #include "dlgvalidateregistration.h"
+#include <QSqlDatabase>
+#include <QSqlQuery>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -34,6 +36,12 @@ void MainWindow::on_actionUpload_new_data_triggered()
     DlgImportCSV dlg(this);
     if (dlg.exec() == QDialog::Accepted)
     {
+        _filename = dlg.filename();
+        _columnSeparator = dlg.columnSeparator();
+        _stringDelimiter = dlg.stringDelimiter();
+        _recordSeparator = dlg.recordSeparator();
+        _numLinesToIgnore = dlg.numLinesToIgnore();
+        uploadData();
     }
 }
 
@@ -43,4 +51,31 @@ void MainWindow::on_actionValidate_Users_triggered()
     if (dlg.exec() == QDialog::Accepted)
     {
     }
+}
+
+void MainWindow::uploadData()
+{
+    QString sqlQuery = " LOAD DATA LOCAL INFILE '%1' INTO TABLE tbl_name "
+                       " FIELDS TERMINATED BY '%2' ENCLOSED BY '%3' "
+                       " LINES TERMINATED BY '%4' "
+                       " IGNORE %5 LINES; ";
+
+    QString sql = sqlQuery.arg(_filename).arg(_columnSeparator).arg(_stringDelimiter)
+            .arg(_recordSeparator).arg(_numLinesToIgnore);
+
+    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
+    db.setHostName(_server);
+    db.setDatabaseName(_database);
+    db.setUserName(_user);
+    db.setPassword(_password);
+
+    if (db.open())
+    {
+        QSqlQuery qry(sql);
+        if (qry.exec())
+        {
+            // todo bien
+        }
+    }
+    db.close();
 }
