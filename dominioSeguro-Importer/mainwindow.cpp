@@ -5,6 +5,7 @@
 #include "dlgvalidateregistration.h"
 #include <QSqlDatabase>
 #include <QSqlQuery>
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -55,8 +56,8 @@ void MainWindow::on_actionValidate_Users_triggered()
 
 void MainWindow::uploadData()
 {
-    QString sqlQuery = " LOAD DATA LOCAL INFILE '%1' INTO TABLE tbl_name "
-                       " FIELDS TERMINATED BY '%2' ENCLOSED BY '%3' "
+    QString sqlQuery = " LOAD DATA LOCAL INFILE '%1' INTO TABLE datos "
+                       " FIELDS TERMINATED BY '%2' OPTIONALY ENCLOSED BY '%3' "
                        " LINES TERMINATED BY '%4' "
                        " IGNORE %5 LINES; ";
 
@@ -69,6 +70,7 @@ void MainWindow::uploadData()
     db.setUserName(_user);
     db.setPassword(_password);
 
+    qDebug() << QSqlDatabase::drivers().join(", ");
     if (db.open())
     {
         QSqlQuery qry(sql);
