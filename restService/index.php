@@ -64,6 +64,28 @@ $app->post('/register', function() use ($app) {
   }
 });
 
+$app->get('/regitration_requests', function() use ($app) {
+  // query database for all dnis
+  $registraciones = R::find('registracion');
+
+  // send response header for JSON content type
+  $app->response()->header('Content-Type', 'application/json');
+
+  // return JSON-encoded response body with query results
+  echo json_encode(R::exportAll($registraciones));
+});
+
+$app->post('approve/:dni', function($dni) use ($app) {
+  // query database for all data with specific dni
+  $datos = R::find('datos', ' dni = ? ', [ $dni ]);
+
+  // send response header for JSON content type
+  $app->response()->header('Content-Type', 'application/json');
+
+  // return JSON-encoded response body with query results
+  echo json_encode(R::exportAll($datos));
+})->conditions(array('dni' => '([0-9]{8})'));
+
 $app->get('/hello/:name', function ($name) use ($app) {
     echo "Hello, " . $name;
 });
