@@ -1,6 +1,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
-
+#include "httprequestworker.h"
 #include <QMainWindow>
 
 namespace Ui {
@@ -26,6 +26,8 @@ private slots:
     void on_actionValidate_Users_triggered();
 
     void on_actionRefresh_triggered();
+
+    void on_statsReceived(HttpRequestWorker* worker);
 
 private:
     Ui::MainWindow *ui;

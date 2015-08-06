@@ -64,7 +64,7 @@ $app->post('/register', function() use ($app) {
   }
 });
 
-$app->get('/regitration_requests', function() use ($app) {
+$app->get('/registration_requests', function() use ($app) {
   // query database for all dnis
   $registraciones = R::find('registracion');
 

@@ -6,6 +6,10 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include "httprequestworker.h"
+#include <QJsonDocument>
+#include <QJsonArray>
+#include <QJsonObject>
+#include <QMessageBox>
 
 #include <QDebug>
 
@@ -53,6 +57,7 @@ void MainWindow::on_actionValidate_Users_triggered()
     DlgValidateRegistration dlg(this);
     if (dlg.exec() == QDialog::Accepted)
     {
+        on_actionRefresh_triggered();
     }
 }
 
@@ -87,17 +92,42 @@ void MainWindow::uploadData()
 void MainWindow::on_actionRefresh_triggered()
 {
     QString url_str = "http://www.hbobroker.com.ar/smartcard"
-                      "/register";
+                      "/stats";
 
-    HttpRequestInput input(url_str, "POST");
-
-    input.add_var("dni", dlg.dni());
-    input.add_var("celular", "");
-    input.add_var("nombre", dlg.nombre());
-    input.add_var("fechaSolicitud", QDate::currentDate().toString("yyyy-MM-dd"));
+    HttpRequestInput input(url_str, "GET");
 
     HttpRequestWorker *worker = new HttpRequestWorker(this);
-    connect(worker, SIGNAL(on_execution_finished(HttpRequestWorker*)), this, SLOT(handle_resultRegistration(HttpRequestWorker*)));
+    connect(worker, &HttpRequestWorker::on_execution_finished, this, &MainWindow::on_statsReceived);
     worker->execute(&input);
-cp
+}
+
+void MainWindow::on_statsReceived(HttpRequestWorker *worker)
+{
+    if (worker->error_type == QNetworkReply::NoError)
+    {
+        // communication was successful
+        QByteArray response = worker->response;
+
+        QJsonDocument jsonDoc = QJsonDocument::fromJson(response);
+        if (jsonDoc.isArray())
+        {
+            for (int index = 0; index < jsonDoc.array().size(); ++index)
+            {
+                QJsonObject jsonObj = jsonDoc.array()[index].toObject();
+                //dominiosAsegurados[jsonObj["dominio"].toString()] = jsonObj;
+                //ui->comboBox->addItem(jsonObj["dominio"].toString(), jsonObj);
+                ui->lblCountSeguros->setText(jsonObj["countDatos"].toString());
+                ui->lblRegistraciones->setText(jsonObj["totalRegistrados"].toString());
+                ui->lblRequests->setText(jsonObj["regSolicitados"].toString());
+//                "[{"id":"1","countDatos":"1","totalRegistrados":"5","regsSolicitados":"5"}]"
+            }
+        }
+    }
+    else
+    {
+        // an error occurred
+        QString msg = "Error: " + worker->error_str;
+        QMessageBox::information(this, "", msg);
+    }
+    worker->deleteLater();
 }

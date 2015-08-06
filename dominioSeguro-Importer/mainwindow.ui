@@ -75,7 +75,7 @@
             </widget>
            </item>
            <item row="1" column="1">
-            <widget class="QLabel" name="label_5">
+            <widget class="QLabel" name="lblCountSeguros">
              <property name="text">
               <string>TextLabel</string>
              </property>
@@ -102,7 +102,7 @@
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="QLabel" name="label_6">
+            <widget class="QLabel" name="lblRegistraciones">
              <property name="text">
               <string>TextLabel</string>
              </property>
@@ -116,7 +116,7 @@
             </widget>
            </item>
            <item row="1" column="1">
-            <widget class="QLabel" name="label_9">
+            <widget class="QLabel" name="lblRequests">
              <property name="text">
               <string>TextLabel</string>
              </property>

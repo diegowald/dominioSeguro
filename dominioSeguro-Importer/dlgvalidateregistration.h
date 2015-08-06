@@ -2,6 +2,7 @@
 #define DLGVALIDATEREGISTRATION_H
 
 #include <QDialog>
+#include "httprequestworker.h"
 
 namespace Ui {
 class DlgValidateRegistration;
@@ -14,6 +15,9 @@ class DlgValidateRegistration : public QDialog
 public:
     explicit DlgValidateRegistration(QWidget *parent = 0);
     ~DlgValidateRegistration();
+
+private slots:
+    void on_dataReceived(HttpRequestWorker *worker);
 
 private:
     Ui::DlgValidateRegistration *ui;
