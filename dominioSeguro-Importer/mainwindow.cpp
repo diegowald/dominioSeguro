@@ -5,6 +5,8 @@
 #include "dlgvalidateregistration.h"
 #include <QSqlDatabase>
 #include <QSqlQuery>
+#include "httprequestworker.h"
+
 #include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -80,4 +82,22 @@ void MainWindow::uploadData()
         }
     }
     db.close();
+}
+
+void MainWindow::on_actionRefresh_triggered()
+{
+    QString url_str = "http://www.hbobroker.com.ar/smartcard"
+                      "/register";
+
+    HttpRequestInput input(url_str, "POST");
+
+    input.add_var("dni", dlg.dni());
+    input.add_var("celular", "");
+    input.add_var("nombre", dlg.nombre());
+    input.add_var("fechaSolicitud", QDate::currentDate().toString("yyyy-MM-dd"));
+
+    HttpRequestWorker *worker = new HttpRequestWorker(this);
+    connect(worker, SIGNAL(on_execution_finished(HttpRequestWorker*)), this, SLOT(handle_resultRegistration(HttpRequestWorker*)));
+    worker->execute(&input);
+cp
 }

@@ -108,13 +108,6 @@
              </property>
             </widget>
            </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_10">
-             <property name="text">
-              <string>Access today</string>
-             </property>
-            </widget>
-           </item>
            <item row="1" column="0">
             <widget class="QLabel" name="label_8">
              <property name="text">
@@ -126,6 +119,13 @@
             <widget class="QLabel" name="label_9">
              <property name="text">
               <string>TextLabel</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_10">
+             <property name="text">
+              <string>Access today</string>
              </property>
             </widget>
            </item>
@@ -192,6 +192,7 @@
    <addaction name="actionConnect_to_Server"/>
    <addaction name="actionUpload_new_data"/>
    <addaction name="actionValidate_Users"/>
+   <addaction name="actionRefresh"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionConnect_to_Server">
@@ -210,6 +211,11 @@
   <action name="actionValidate_Users">
    <property name="text">
     <string>Validate Users</string>
+   </property>
+  </action>
+  <action name="actionRefresh">
+   <property name="text">
+    <string>Refresh</string>
    </property>
   </action>
  </widget>

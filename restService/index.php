@@ -75,7 +75,7 @@ $app->get('/regitration_requests', function() use ($app) {
   echo json_encode(R::exportAll($registraciones));
 });
 
-$app->post('approve/:dni', function($dni) use ($app) {
+$app->post('/approve/:dni', function($dni) use ($app) {
   // query database for all data with specific dni
   $datos = R::find('datos', ' dni = ? ', [ $dni ]);
 
@@ -85,6 +85,26 @@ $app->post('approve/:dni', function($dni) use ($app) {
   // return JSON-encoded response body with query results
   echo json_encode(R::exportAll($datos));
 })->conditions(array('dni' => '([0-9]{8})'));
+
+$app->get('/stats', function() use ($app) {
+  // query database for statistics
+  $stats = R::getAll(
+"select 1 as id,
+(select count(1) from datos) as countDatos,
+(select count(1) from registracion) as totalRegistrados,
+(select count(1) from registracion where fecha_registracion is null) as regsSolicitados;"
+    );
+
+  // convert to beans
+  $statistics = R::convertToBeans('statistics', $stats);
+
+  // send response header for JSON content type
+  $app->response()->header('Content-Type', 'application/json');
+
+
+  // return JSON-encoded response body with query results
+  echo json_encode(R::exportAll($statistics));
+});
 
 $app->get('/hello/:name', function ($name) use ($app) {
     echo "Hello, " . $name;

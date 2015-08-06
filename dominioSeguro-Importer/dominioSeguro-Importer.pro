@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui sql
+QT       += core gui sql network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -16,12 +16,14 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     dlgconnecttodatabase.cpp \
     dlgimportcsv.cpp \
-    dlgvalidateregistration.cpp
+    dlgvalidateregistration.cpp \
+    httprequestworker.cpp
 
 HEADERS  += mainwindow.h \
     dlgconnecttodatabase.h \
     dlgimportcsv.h \
-    dlgvalidateregistration.h
+    dlgvalidateregistration.h \
+    httprequestworker.h
 
 FORMS    += mainwindow.ui \
     dlgconnecttodatabase.ui \

@@ -18,6 +18,7 @@
 #include <QStandardPaths>
 #include <QFile>
 
+
 //#define DEMO
 
 MainWindow::MainWindow(QWidget *parent) :
