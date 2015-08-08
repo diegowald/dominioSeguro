@@ -18,6 +18,9 @@ public:
 
 private slots:
     void on_dataReceived(HttpRequestWorker *worker);
+    void on_updateFinished(HttpRequestWorker *worker);
+    void on_buttonBox_accepted();
+
 
 private:
     Ui::DlgValidateRegistration *ui;
