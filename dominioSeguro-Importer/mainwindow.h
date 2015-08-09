@@ -28,6 +28,7 @@ private slots:
     void on_actionRefresh_triggered();
 
     void on_statsReceived(HttpRequestWorker* worker);
+    void on_updateFinished(HttpRequestWorker *worker);
 
 private:
     Ui::MainWindow *ui;

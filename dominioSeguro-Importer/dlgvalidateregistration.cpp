@@ -75,39 +75,16 @@ void DlgValidateRegistration::on_dataReceived(HttpRequestWorker *worker)
     worker->deleteLater();
 }
 
-void DlgValidateRegistration::on_buttonBox_accepted()
+QStringList DlgValidateRegistration::getIdsToValidate()
 {
-    QString urlTempl = "http://www.hbobroker.com.ar/smartcard/approve/%1";
-
-    for (int r = 0; r < ui->tableWidget->rowCount(); ++r)
+    QStringList lst;
+    for (int index = 0; index < ui->tableWidget->rowCount(); ++index)
     {
-        QTableWidgetItem *item = ui->tableWidget->item(r, 0);
+        QTableWidgetItem *item = ui->tableWidget->item(index, 0);
         if (item->checkState() == Qt::Checked)
         {
-            QString url = urlTempl.arg(item->data(Qt::UserRole).toString());
-
-            HttpRequestInput input(url, "GET");
-            HttpRequestWorker *w = new HttpRequestWorker(this);
-            connect(w, &HttpRequestWorker::on_execution_finished, this, &DlgValidateRegistration::on_updateFinished);
-            w->execute(&input);
+            lst.append(item->data(Qt::UserRole).toString());
         }
     }
-}
-
-
-void DlgValidateRegistration::on_updateFinished(HttpRequestWorker *worker)
-{
-    if (worker->error_type == QNetworkReply::NoError)
-    {
-        // communication was successful
-        //QByteArray response = worker->response;
-    }
-    else
-    {
-        // an error occurred
-        QString msg = "Error: " + worker->error_str;
-        QMessageBox::information(this, "", msg);
-    }
-
-    worker->deleteLater();
+    return lst;
 }

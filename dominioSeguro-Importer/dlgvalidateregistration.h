@@ -15,11 +15,10 @@ class DlgValidateRegistration : public QDialog
 public:
     explicit DlgValidateRegistration(QWidget *parent = 0);
     ~DlgValidateRegistration();
+    QStringList getIdsToValidate();
 
 private slots:
     void on_dataReceived(HttpRequestWorker *worker);
-    void on_updateFinished(HttpRequestWorker *worker);
-    void on_buttonBox_accepted();
 
 
 private:

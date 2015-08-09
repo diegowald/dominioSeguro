@@ -57,8 +57,40 @@ void MainWindow::on_actionValidate_Users_triggered()
     DlgValidateRegistration dlg(this);
     if (dlg.exec() == QDialog::Accepted)
     {
+        QStringList validations = dlg.getIdsToValidate();
+
+        QString urlTempl = "http://www.hbobroker.com.ar/smartcard/approve/%1";
+
+        foreach (QString id, validations)
+        {
+            QString url = urlTempl.arg(id);
+
+            HttpRequestInput input(url, "GET");
+            HttpRequestWorker *w = new HttpRequestWorker(this);
+            connect(w, &HttpRequestWorker::on_execution_finished, this, &MainWindow::on_updateFinished);
+            w->execute(&input);
+            break;
+        }
+
         on_actionRefresh_triggered();
     }
+}
+
+void MainWindow::on_updateFinished(HttpRequestWorker *worker)
+{
+    if (worker->error_type == QNetworkReply::NoError)
+    {
+        // communication was successful
+        //QByteArray response = worker->response;
+    }
+    else
+    {
+        // an error occurred
+        QString msg = "Error: " + worker->error_str;
+        QMessageBox::information(this, "", msg);
+    }
+
+    worker->deleteLater();
 }
 
 void MainWindow::uploadData()
