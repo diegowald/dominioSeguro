@@ -117,6 +117,44 @@ $app->get('/stats', function() use ($app) {
   echo json_encode(R::exportAll($statistics));
 });
 
+
+$app->post('/addRecord', function() use ($app) {
+  // get and decode JSON request body
+  $request = $app->request();
+  $post = $request->post();
+  $input = $post;
+
+  $dato = R::dispense('datos');
+
+  $dato->anio
+    ui->lblAnio->setText(jsonObj["anio"].toString());
+    ui->lblAsegurado->setText(jsonObj["asegurado"].toString());
+    ui->lblDominio->setText(jsonObj["dominio"].toString());
+    ui->lblCobertura->setText(jsonObj["cobertura"].toString());
+    ui->lblPoliza->setText(jsonObj["poliza"].toString());
+    ui->lblVigenciaDesde->setText(jsonObj["vigencia_desde"].toString());
+    ui->lblVigenciaHasta->setText(jsonObj["vigencia_hasta"].toString());
+    ui->lblModelo->setText(jsonObj["modelo"].toString());
+    ui->lblChasis->setText(jsonObj["chasis"].toString());
+    ui->lblMotor->setText(jsonObj["motor"].toString());
+    ui->lblMedioPago->setText(jsonObj["medioPago"].toString());
+    ui->lblProductor->setText(jsonObj["Productor"].toString());
+
+
+  // query database for all data with specific dni
+  $datos = R::load('registracion', $id);
+
+  $datos->fecha_registracion = date("Y-m-d H:i:s");
+
+  R::store($datos);
+
+  // send response header for JSON content type
+  $app->response()->header('Content-Type', 'application/json');
+
+  // return JSON-encoded response body with query results
+  echo json_encode(R::exportAll($datos));
+});
+
 $app->get('/hello/:name', function ($name) use ($app) {
     echo "Hello, " . $name;
 });
