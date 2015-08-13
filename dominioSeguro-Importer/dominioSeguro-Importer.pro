@@ -17,13 +17,15 @@ SOURCES += main.cpp\
     dlgconnecttodatabase.cpp \
     dlgimportcsv.cpp \
     dlgvalidateregistration.cpp \
-    httprequestworker.cpp
+    httprequestworker.cpp \
+    csvreader.cpp
 
 HEADERS  += mainwindow.h \
     dlgconnecttodatabase.h \
     dlgimportcsv.h \
     dlgvalidateregistration.h \
-    httprequestworker.h
+    httprequestworker.h \
+    csvreader.h
 
 FORMS    += mainwindow.ui \
     dlgconnecttodatabase.ui \

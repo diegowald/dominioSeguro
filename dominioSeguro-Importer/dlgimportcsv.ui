@@ -38,6 +38,13 @@
          </property>
         </widget>
        </item>
+       <item>
+        <widget class="QPushButton" name="btnPreview">
+         <property name="text">
+          <string>Preview</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </item>
     </layout>

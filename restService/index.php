@@ -75,7 +75,14 @@ $app->get('/registration_requests', function() use ($app) {
   echo json_encode(R::exportAll($registraciones));
 });
 
-$app->get('/approve/:id', function($id) use ($app) {
+$app->post('/approve', function() use ($app) {
+  // get and decode JSON request body
+  $request = $app->request();
+  $post = $request->post();
+  $input = $post;
+
+  $id = (int)$input['id'];
+
   // query database for all data with specific dni
   $datos = R::load('registracion', $id);
 

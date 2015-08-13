@@ -59,17 +59,17 @@ void MainWindow::on_actionValidate_Users_triggered()
     {
         QStringList validations = dlg.getIdsToValidate();
 
-        QString urlTempl = "http://www.hbobroker.com.ar/smartcard/approve/%1";
+        QString url = "http://www.hbobroker.com.ar/smartcard/approve";
 
         foreach (QString id, validations)
         {
-            QString url = urlTempl.arg(id);
+            HttpRequestInput input(url, "POST");
 
-            HttpRequestInput input(url, "GET");
-            HttpRequestWorker *w = new HttpRequestWorker(this);
-            connect(w, &HttpRequestWorker::on_execution_finished, this, &MainWindow::on_updateFinished);
-            w->execute(&input);
-            break;
+            input.add_var("id", id);
+
+            HttpRequestWorker *worker = new HttpRequestWorker(this);
+            connect(worker, SIGNAL(on_execution_finished(HttpRequestWorker*)), this, SLOT(on_updateFinished(HttpRequestWorker*)));
+            worker->execute(&input);
         }
 
         on_actionRefresh_triggered();

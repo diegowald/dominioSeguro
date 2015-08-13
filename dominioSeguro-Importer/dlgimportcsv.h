@@ -24,6 +24,8 @@ public:
 private slots:
     void on_toolButton_released();
 
+    void on_btnPreview_released();
+
 private:
     void parseCSV();
 

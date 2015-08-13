@@ -5,6 +5,9 @@
 #include <QTextStream>
 #include <QDebug>
 
+#include "csvreader.h"
+
+
 DlgImportCSV::DlgImportCSV(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DlgImportCSV)
@@ -67,4 +70,14 @@ void DlgImportCSV::parseCSV()
         ui->textCSV->setText(stream.readAll());
         file.close();
     }
+}
+
+void DlgImportCSV::on_btnPreview_released()
+{
+    CSVReader csv(filename(), ui->txtColumnSeparator->text(),
+                  ui->txtIgnoreFirstNLines->text().toInt(),
+                  ui->txtStringDelimiter->text());
+
+    csv.load();
+    qDebug() << csv.headers();
 }
