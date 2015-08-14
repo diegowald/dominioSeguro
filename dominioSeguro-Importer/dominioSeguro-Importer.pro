@@ -18,14 +18,16 @@ SOURCES += main.cpp\
     dlgimportcsv.cpp \
     dlgvalidateregistration.cpp \
     httprequestworker.cpp \
-    csvreader.cpp
+    csvreader.cpp \
+    recordupdater.cpp
 
 HEADERS  += mainwindow.h \
     dlgconnecttodatabase.h \
     dlgimportcsv.h \
     dlgvalidateregistration.h \
     httprequestworker.h \
-    csvreader.h
+    csvreader.h \
+    recordupdater.h
 
 FORMS    += mainwindow.ui \
     dlgconnecttodatabase.ui \

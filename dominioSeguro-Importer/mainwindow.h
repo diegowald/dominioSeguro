@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 #include "httprequestworker.h"
 #include <QMainWindow>
+#include "recordupdater.h"
 
 namespace Ui {
 class MainWindow;
@@ -17,6 +18,7 @@ public:
 
 private:
     void uploadData();
+    void uploadData2();
 
 private slots:
     void on_actionConnect_to_Server_triggered();
@@ -29,6 +31,8 @@ private slots:
 
     void on_statsReceived(HttpRequestWorker* worker);
     void on_updateFinished(HttpRequestWorker *worker);
+
+    void on_updateRecordsFinished();
 
 private:
     Ui::MainWindow *ui;
@@ -43,7 +47,7 @@ private:
     QString _stringDelimiter;
     QString _recordSeparator;
     int _numLinesToIgnore;
-
+    RecordUpdater *_updater;
 };
 
 #endif // MAINWINDOW_H

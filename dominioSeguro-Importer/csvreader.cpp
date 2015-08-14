@@ -74,3 +74,8 @@ QStringList CSVReader::parse(const QString &row)
     }
     return res;
 }
+
+int CSVReader::recordCount() const
+{
+    return _records.count();
+}

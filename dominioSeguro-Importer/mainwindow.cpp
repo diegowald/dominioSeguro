@@ -10,8 +10,10 @@
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QMessageBox>
-
+#include "csvreader.h"
+#include "recordupdater.h"
 #include <QDebug>
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -93,7 +95,7 @@ void MainWindow::on_updateFinished(HttpRequestWorker *worker)
     worker->deleteLater();
 }
 
-void MainWindow::uploadData()
+void MainWindow::uploadData2()
 {
     QString sqlQuery = " LOAD DATA LOCAL INFILE '%1' INTO TABLE datos "
                        " FIELDS TERMINATED BY '%2' OPTIONALY ENCLOSED BY '%3' "
@@ -119,6 +121,20 @@ void MainWindow::uploadData()
         }
     }
     db.close();
+}
+
+void MainWindow::uploadData()
+{
+    _updater = new RecordUpdater(_filename, _columnSeparator,
+                  _numLinesToIgnore, _stringDelimiter);
+
+    connect(_updater, &RecordUpdater::processFinished, this, &MainWindow::on_updateRecordsFinished);
+    _updater->run();
+}
+
+void MainWindow::on_updateRecordsFinished()
+{
+    ui->statusBar->showMessage("update Finalizado", 3);
 }
 
 void MainWindow::on_actionRefresh_triggered()

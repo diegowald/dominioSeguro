@@ -62,22 +62,35 @@ void DlgImportCSV::on_toolButton_released()
 
 void DlgImportCSV::parseCSV()
 {
-    QFile file(filename());
-    ui->textCSV->clear();
-    if (file.open(QIODevice::ReadOnly))
-    {
-        QTextStream stream(&file);
-        ui->textCSV->setText(stream.readAll());
-        file.close();
-    }
-}
+    ui->tblCSV->setRowCount(0);
+    ui->tblCSV->setColumnCount(0);
 
-void DlgImportCSV::on_btnPreview_released()
-{
+
+    QFile file(filename());
     CSVReader csv(filename(), ui->txtColumnSeparator->text(),
                   ui->txtIgnoreFirstNLines->text().toInt(),
                   ui->txtStringDelimiter->text());
 
     csv.load();
     qDebug() << csv.headers();
+
+    ui->tblCSV->setColumnCount(csv.headers().count());
+    ui->tblCSV->setHorizontalHeaderLabels(csv.headers());
+
+    int recCount = csv.recordCount();
+    ui->tblCSV->setRowCount(recCount);
+
+    for (int i = 0; i < recCount; ++i)
+    {
+        QStringList rec = csv.record(i);
+        for (int j = 0; j < rec.count(); ++j)
+        {
+            ui->tblCSV->setItem(i, j, new QTableWidgetItem(rec.at(j)));
+        }
+    }
+}
+
+void DlgImportCSV::on_btnPreview_released()
+{
+    parseCSV();
 }

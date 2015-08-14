@@ -107,7 +107,14 @@
     </widget>
    </item>
    <item>
-    <widget class="QTextEdit" name="textCSV"/>
+    <widget class="QTableWidget" name="tblCSV">
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
+     <property name="alternatingRowColors">
+      <bool>true</bool>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">

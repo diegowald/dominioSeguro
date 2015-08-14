@@ -118,41 +118,41 @@ $app->get('/stats', function() use ($app) {
 });
 
 
-$app->post('/addRecord', function() use ($app) {
-  // get and decode JSON request body
-  $request = $app->request();
-  $post = $request->post();
-  $input = $post;
+$app->post('/addrecord', function() use ($app) {
+  try {
+    // get and decode JSON request body
+    $request = $app->request();
+    $post = $request->post();
+    $input = $post;
 
-  $dato = R::dispense('datos');
+    $dato = R::dispense('datos');
 
-  $dato->anio
-    ui->lblAnio->setText(jsonObj["anio"].toString());
-    ui->lblAsegurado->setText(jsonObj["asegurado"].toString());
-    ui->lblDominio->setText(jsonObj["dominio"].toString());
-    ui->lblCobertura->setText(jsonObj["cobertura"].toString());
-    ui->lblPoliza->setText(jsonObj["poliza"].toString());
-    ui->lblVigenciaDesde->setText(jsonObj["vigencia_desde"].toString());
-    ui->lblVigenciaHasta->setText(jsonObj["vigencia_hasta"].toString());
-    ui->lblModelo->setText(jsonObj["modelo"].toString());
-    ui->lblChasis->setText(jsonObj["chasis"].toString());
-    ui->lblMotor->setText(jsonObj["motor"].toString());
-    ui->lblMedioPago->setText(jsonObj["medioPago"].toString());
-    ui->lblProductor->setText(jsonObj["Productor"].toString());
+    $dato->dni = (string)$input['dni'];
+    $dato->dominio = (string)$input['dominio'];
+    $dato->asegurado = (string)$input['asegurado'];
+    $dato->cobertura = (string)$input['cobertura'];
+    $dato->poliza = (string)$input['poliza'];
+    $dato->vigencia_desde = (string)$input['vigencia_desde'];
+    $dato->vigencia_hasta = (string)$input['vigencia_hasta'];
+    $dato->modelo = (string)$input['modelo'];
+    $dato->anio = (string)$input['anio'];
+    $dato->chasis = (string)$input['chasis'];
+    $dato->motor = (string)$input['motor'];
+    $dato->mediopago = (string)$input['medioPago'];
+    $dato->productor = (string)$input['Productor'];
 
+    R::store($dato);
 
-  // query database for all data with specific dni
-  $datos = R::load('registracion', $id);
+    // send response header for JSON content type
+    $app->response()->header('Content-Type', 'application/json');
 
-  $datos->fecha_registracion = date("Y-m-d H:i:s");
+    // return JSON-encoded response body with query results
+    echo json_encode(R::exportAll($dato));
 
-  R::store($datos);
-
-  // send response header for JSON content type
-  $app->response()->header('Content-Type', 'application/json');
-
-  // return JSON-encoded response body with query results
-  echo json_encode(R::exportAll($datos));
+  } catch (Exception $e) {
+    $app->response()->status(400);
+    $app->response()->header('X-Status-Reason', $e->getMessage());
+  }
 });
 
 $app->get('/hello/:name', function ($name) use ($app) {

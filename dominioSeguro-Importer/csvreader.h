@@ -17,6 +17,7 @@ public:
     void load();
     QStringList headers();
     QStringList record(int index);
+    int recordCount() const;
 
 signals:
 
