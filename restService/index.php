@@ -155,6 +155,47 @@ $app->post('/addrecord', function() use ($app) {
   }
 });
 
+$app->post('/uploadcsv', function() use ($app) {
+  try {
+    if (!isset($_FILES['upload'])) {
+      echo "No files uploaded";
+      return;
+    }
+
+    $files = $_FILES['upload'];
+    $cnt = count($files['name']);
+
+    //for($i = 0 ; $i < $cnt ; $i++) {
+      echo "1<br>";
+      /*if ($files['error'][$i] === 0) {*/
+        echo "2<br>";
+        $name = uniqid('img-'.date('Ymd').'-');
+        echo "3<br>";
+        var_dump($files);
+        $texto = file_get_contents($files['tmp_name']);
+/*        if (move_uploaded_file($files['tmp_name'], 'uploads/' . $name) === true) {
+          echo "4<br>";
+          $imgs[] = array('url' => '/uploads/' . $name, 'name' => $files['name'][$i]);
+        }*/
+        echo $texto;
+      /*}
+      else {
+        echo $files['error'][$i] . '<br>';
+      }*/
+    //}
+    // get and decode JSON request body
+//    $app->response()->header('Content-Type', 'application/json');
+
+    // return JSON-encoded response body with query results
+//    echo json_encode(R::exportAll($dato));
+    echo "ok";
+    echo $imgs;
+  } catch (Exception $e) {
+    $app->response()->status(400);
+    $app->response()->header('X-Status-Reason', $e->getMessage());
+  }
+});
+
 $app->get('/hello/:name', function ($name) use ($app) {
     echo "Hello, " . $name;
 });

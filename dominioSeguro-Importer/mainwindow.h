@@ -19,6 +19,7 @@ public:
 private:
     void uploadData();
     void uploadData2();
+    void uploadData3();
 
 private slots:
     void on_actionConnect_to_Server_triggered();
@@ -33,6 +34,7 @@ private slots:
     void on_updateFinished(HttpRequestWorker *worker);
 
     void on_updateRecordsFinished();
+    void on_uploadCSVfinished(HttpRequestWorker *worker);
 
 private:
     Ui::MainWindow *ui;

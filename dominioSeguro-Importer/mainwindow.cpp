@@ -14,6 +14,7 @@
 #include "recordupdater.h"
 #include <QDebug>
 
+// http://www.creativepulse.gr/en/blog/2014/restful-api-requests-using-qt-cpp-for-linux-mac-osx-ms-windows
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -95,6 +96,37 @@ void MainWindow::on_updateFinished(HttpRequestWorker *worker)
     worker->deleteLater();
 }
 
+void MainWindow::uploadData()
+{
+    QString url = "http://www.hbobroker.com.ar/smartcard/uploadcsv";
+
+    HttpRequestInput input(url, "POST");
+
+    input.add_file("upload", _filename, NULL, "text/csv");
+
+    HttpRequestWorker *worker = new HttpRequestWorker();
+    connect(worker, &HttpRequestWorker::on_execution_finished, this, &MainWindow::on_uploadCSVfinished);
+    worker->execute(&input);
+}
+
+void MainWindow::on_uploadCSVfinished(HttpRequestWorker *worker)
+{
+    if (worker->error_type == QNetworkReply::NoError)
+    {
+        // communication was successful
+        QByteArray response = worker->response;
+        qDebug() << QString(response);
+    }
+    else
+    {
+        // an error occurred
+        QString msg = "Error: " + worker->error_str;
+        QMessageBox::information(this, "", msg);
+    }
+
+    worker->deleteLater();
+}
+
 void MainWindow::uploadData2()
 {
     QString sqlQuery = " LOAD DATA LOCAL INFILE '%1' INTO TABLE datos "
@@ -123,7 +155,7 @@ void MainWindow::uploadData2()
     db.close();
 }
 
-void MainWindow::uploadData()
+void MainWindow::uploadData3()
 {
     _updater = new RecordUpdater(_filename, _columnSeparator,
                   _numLinesToIgnore, _stringDelimiter);
