@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "dlgconnecttodatabase.h"
 #include "dlgimportcsv.h"
 #include "dlgvalidateregistration.h"
 #include <QSqlDatabase>
@@ -11,34 +10,26 @@
 #include <QJsonObject>
 #include <QMessageBox>
 #include "csvreader.h"
+#include "csvwriter.h"
 #include "recordupdater.h"
+
 #include <QDebug>
 
 // http://www.creativepulse.gr/en/blog/2014/restful-api-requests-using-qt-cpp-for-linux-mac-osx-ms-windows
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow), _server(""), _database(""),
-    _user(""), _password("")
+    ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    _file.open();
+    _file.close();
+    on_actionRefresh_triggered();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-}
-
-void MainWindow::on_actionConnect_to_Server_triggered()
-{
-    DlgConnectToDatabase dlg(this);
-    if (dlg.exec() == QDialog::Accepted)
-    {
-        _server = dlg.server();
-        _database = dlg.database();
-        _user = dlg.user();
-        _password = dlg.password();
-    }
 }
 
 void MainWindow::on_actionUpload_new_data_triggered()
@@ -102,11 +93,58 @@ void MainWindow::uploadData()
 
     HttpRequestInput input(url, "POST");
 
-    input.add_file("upload", _filename, NULL, "text/csv");
+    QString filename = transformCSV();
+
+
+    input.add_file("upload", filename, NULL, "text/csv");
+    input.add_var("columnSeparator", ",");
+    input.add_var("stringDelimiter", "\"");
+    input.add_var("recordSeparator", "\n");
+    input.add_var("numLinesToIgnore", "1");
 
     HttpRequestWorker *worker = new HttpRequestWorker();
     connect(worker, &HttpRequestWorker::on_execution_finished, this, &MainWindow::on_uploadCSVfinished);
     worker->execute(&input);
+}
+
+QString MainWindow::transformCSV()
+{
+    CSVReader reader(_filename, _columnSeparator, _numLinesToIgnore, _stringDelimiter);
+    CSVWriter writer(_file.fileName(), ",", "\"");
+
+    QStringList header;
+
+    reader.load();
+
+    header << "compania" << "dni" << "dominio" << "asegurado"
+           << "cobertura" << "poliza" << "vigencia_desde"
+           << "vigencia_hasta" << "modelo" << "anio"
+           << "chasis" << "motor" << "medioPago" << "Productor";
+
+    writer.setHeaders(header);
+
+    for (int i = 0; i < reader.recordCount(); ++i)
+    {
+        QStringList rec = reader.record(i);
+        QStringList record;
+        record << rec.at(0)
+               << rec.at(8)
+               << rec.at(9)
+               << rec.at(6)
+               << rec.at(22)
+               << rec.at(1)
+               << rec.at(4)
+               << rec.at(5)
+               << rec.at(11)
+               << rec.at(12)
+               << rec.at(15)
+               << rec.at(14)
+               << "S/D"
+               << rec.at(24);
+        writer.addRecord(record);
+    }
+
+    return _file.fileName();
 }
 
 void MainWindow::on_uploadCSVfinished(HttpRequestWorker *worker)
@@ -121,47 +159,11 @@ void MainWindow::on_uploadCSVfinished(HttpRequestWorker *worker)
     {
         // an error occurred
         QString msg = "Error: " + worker->error_str;
-        QMessageBox::information(this, "", msg);
+        qDebug() << worker->error_str;
+        qDebug() << worker->error_type;
     }
 
     worker->deleteLater();
-}
-
-void MainWindow::uploadData2()
-{
-    QString sqlQuery = " LOAD DATA LOCAL INFILE '%1' INTO TABLE datos "
-                       " FIELDS TERMINATED BY '%2' OPTIONALY ENCLOSED BY '%3' "
-                       " LINES TERMINATED BY '%4' "
-                       " IGNORE %5 LINES; ";
-
-    QString sql = sqlQuery.arg(_filename).arg(_columnSeparator).arg(_stringDelimiter)
-            .arg(_recordSeparator).arg(_numLinesToIgnore);
-
-    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
-    db.setHostName(_server);
-    db.setDatabaseName(_database);
-    db.setUserName(_user);
-    db.setPassword(_password);
-
-    qDebug() << QSqlDatabase::drivers().join(", ");
-    if (db.open())
-    {
-        QSqlQuery qry(sql);
-        if (qry.exec())
-        {
-            // todo bien
-        }
-    }
-    db.close();
-}
-
-void MainWindow::uploadData3()
-{
-    _updater = new RecordUpdater(_filename, _columnSeparator,
-                  _numLinesToIgnore, _stringDelimiter);
-
-    connect(_updater, &RecordUpdater::processFinished, this, &MainWindow::on_updateRecordsFinished);
-    _updater->run();
 }
 
 void MainWindow::on_updateRecordsFinished()

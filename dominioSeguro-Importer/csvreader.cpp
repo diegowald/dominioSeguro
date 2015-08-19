@@ -16,7 +16,6 @@ CSVReader::CSVReader(const QString &filePath, const QString &columnSeparator, in
 
 void CSVReader::load()
 {
-
     QFile file(_filePath);
     if (file.open(QIODevice::ReadOnly))
     {

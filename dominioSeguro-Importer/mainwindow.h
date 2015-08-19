@@ -3,6 +3,8 @@
 #include "httprequestworker.h"
 #include <QMainWindow>
 #include "recordupdater.h"
+#include <QTemporaryFile>
+
 
 namespace Ui {
 class MainWindow;
@@ -18,12 +20,9 @@ public:
 
 private:
     void uploadData();
-    void uploadData2();
-    void uploadData3();
+    QString transformCSV();
 
 private slots:
-    void on_actionConnect_to_Server_triggered();
-
     void on_actionUpload_new_data_triggered();
 
     void on_actionValidate_Users_triggered();
@@ -39,17 +38,13 @@ private slots:
 private:
     Ui::MainWindow *ui;
 
-    QString _server;
-    QString _database;
-    QString _user;
-    QString _password;
-
     QString _filename;
     QString _columnSeparator;
     QString _stringDelimiter;
     QString _recordSeparator;
     int _numLinesToIgnore;
     RecordUpdater *_updater;
+    QTemporaryFile _file;
 };
 
 #endif // MAINWINDOW_H

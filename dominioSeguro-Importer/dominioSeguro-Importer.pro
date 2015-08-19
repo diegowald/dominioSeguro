@@ -14,22 +14,21 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    dlgconnecttodatabase.cpp \
     dlgimportcsv.cpp \
     dlgvalidateregistration.cpp \
     httprequestworker.cpp \
     csvreader.cpp \
-    recordupdater.cpp
+    recordupdater.cpp \
+    csvwriter.cpp
 
 HEADERS  += mainwindow.h \
-    dlgconnecttodatabase.h \
     dlgimportcsv.h \
     dlgvalidateregistration.h \
     httprequestworker.h \
     csvreader.h \
-    recordupdater.h
+    recordupdater.h \
+    csvwriter.h
 
 FORMS    += mainwindow.ui \
-    dlgconnecttodatabase.ui \
     dlgimportcsv.ui \
     dlgvalidateregistration.ui

@@ -156,6 +156,8 @@ $app->post('/addrecord', function() use ($app) {
 });
 
 $app->post('/uploadcsv', function() use ($app) {
+  R::begin();
+
   try {
     if (!isset($_FILES['upload'])) {
       echo "No files uploaded";
@@ -165,32 +167,83 @@ $app->post('/uploadcsv', function() use ($app) {
     $files = $_FILES['upload'];
     $cnt = count($files['name']);
 
-    //for($i = 0 ; $i < $cnt ; $i++) {
-      echo "1<br>";
-      /*if ($files['error'][$i] === 0) {*/
-        echo "2<br>";
-        $name = uniqid('img-'.date('Ymd').'-');
-        echo "3<br>";
-        var_dump($files);
-        $texto = file_get_contents($files['tmp_name']);
-/*        if (move_uploaded_file($files['tmp_name'], 'uploads/' . $name) === true) {
-          echo "4<br>";
-          $imgs[] = array('url' => '/uploads/' . $name, 'name' => $files['name'][$i]);
-        }*/
-        echo $texto;
-      /*}
-      else {
-        echo $files['error'][$i] . '<br>';
-      }*/
-    //}
-    // get and decode JSON request body
-//    $app->response()->header('Content-Type', 'application/json');
+    $request = $app->request();
+    $post = $request->post();
+    $input = $post;
 
-    // return JSON-encoded response body with query results
-//    echo json_encode(R::exportAll($dato));
-    echo "ok";
-    echo $imgs;
+    $columnSeparator = (string)$input['columnSeparator'];
+    $stringDelimiter = (string)$input['stringDelimiter'];
+    $recordSeparator = (string)$input['recordSeparator'];
+    $numLinesToIgnore = (string)$input['numLinesToIgnore'];
+
+    $filename = $files['tmp_name'];
+
+    /*$sql =  
+" LOAD DATA LOCAL INFILE '$filename' INTO TABLE datos 
+ FIELDS TERMINATED BY '$columnSeparator' OPTIONALY ENCLOSED BY '$stringDelimiter' 
+ LINES TERMINATED BY '$recordSeparator' 
+ IGNORE $numLinesToIgnore LINES
+ ( compania, dni, dominio, asegurado, cobertura,
+  poliza, vigencia_desde, vigencia_hasta, modelo, anio, 
+  chasis, motor, medioPago, Productor);" ;
+
+
+    echo $sql;
+
+
+    $link = mysql_connect('192.168.0.58', 'hbo_mobile', 'hbo_mobile');
+    if (!$link) {
+        die('Could not connect: ' . mysql_error());
+    }
+    echo 'Connected successfully';
+    
+    mysql_select_db('hbobroker_db', $link);
+
+    $result = mysql_query($sql, $link);
+
+    //R::exec($sql);
+
+    if ($result) {
+      echo "ok";
+    } else {
+      echo " error en loaddata ";
+      //echo mysql_errno($link) . ": " . mysql_error($link). "\n";
+    }
+
+    mysql_close($link);*/
+
+    R::wipe('datos');
+    
+    $row = 1;
+    if (($handle = fopen($filename, "r")) !== FALSE) {
+        while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+            if ($row > $numLinesToIgnore) {
+              $dato = R::dispense('datos');
+
+              $dato->compania = $data[0];
+              $dato->dni = $data[1];
+              $dato->dominio = $data[2];
+              $dato->asegurado = $data[3];
+              $dato->cobertura = $data[4];
+              $dato->poliza = $data[4];
+              $dato->vigencia_desde = $data[5];
+              $dato->vigencia_hasta  = $data[6];
+              $dato->modelo = $data[7];
+              $dato->anio = $data[8];
+              $dato->chasis = $data[9];
+              $dato->motor  = $data[10];
+              $dato->mediopago = $data[11];
+              $dato->productor = $data[12];
+
+              R::store($dato);
+            }
+            $row++;
+        }
+        fclose($handle);
+        R::commit();
+    }    
   } catch (Exception $e) {
+    R::rollback();
     $app->response()->status(400);
     $app->response()->header('X-Status-Reason', $e->getMessage());
   }
