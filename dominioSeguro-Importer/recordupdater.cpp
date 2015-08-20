@@ -54,7 +54,7 @@ void RecordUpdater::internalUpdateRecords(RecordUpdater *record)
         connect(worker, &HttpRequestWorker::on_execution_finished, record, &RecordUpdater::on_addRecordFinished);
         while(record->_parallelProcesses > 2)
         {
-            sleep(1);
+            QThread::sleep(1);
             //QApplication::processEvents();
         }
         worker->execute(&input);
