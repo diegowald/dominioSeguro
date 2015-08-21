@@ -16,38 +16,6 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>Database</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="lblDatabase">
-        <property name="text">
-         <string>TextLabel</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_3">
-        <property name="text">
-         <string>Status</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="lblStatus">
-        <property name="text">
-         <string>TextLabel</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
        <widget class="QGroupBox" name="groupBox">
@@ -60,7 +28,7 @@
            <item row="0" column="0">
             <widget class="QLabel" name="label_2">
              <property name="text">
-              <string>Last update</string>
+              <string>Ultima Actualizacion</string>
              </property>
             </widget>
            </item>
@@ -70,7 +38,7 @@
            <item row="1" column="0">
             <widget class="QLabel" name="label_4">
              <property name="text">
-              <string>Count</string>
+              <string>Cantidad de registros</string>
              </property>
             </widget>
            </item>
@@ -97,7 +65,7 @@
            <item row="0" column="0">
             <widget class="QLabel" name="label_7">
              <property name="text">
-              <string>Registered</string>
+              <string>Registrados</string>
              </property>
             </widget>
            </item>
@@ -111,7 +79,7 @@
            <item row="1" column="0">
             <widget class="QLabel" name="label_8">
              <property name="text">
-              <string>Requesting access</string>
+              <string>Nuevos Accessos</string>
              </property>
             </widget>
            </item>
@@ -125,7 +93,7 @@
            <item row="2" column="0">
             <widget class="QLabel" name="label_10">
              <property name="text">
-              <string>Access today</string>
+              <string>Hoy accedieron</string>
              </property>
             </widget>
            </item>
@@ -139,7 +107,7 @@
            <item row="3" column="0">
             <widget class="QLabel" name="label_12">
              <property name="text">
-              <string>This month</string>
+              <string>Este mes accedieron</string>
              </property>
             </widget>
            </item>
@@ -178,7 +146,7 @@
      <x>0</x>
      <y>0</y>
      <width>624</width>
-     <height>25</height>
+     <height>24</height>
     </rect>
    </property>
   </widget>
@@ -189,20 +157,11 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionConnect_to_Server"/>
    <addaction name="actionUpload_new_data"/>
    <addaction name="actionValidate_Users"/>
    <addaction name="actionRefresh"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="actionConnect_to_Server">
-   <property name="text">
-    <string>Connect to Server</string>
-   </property>
-   <property name="toolTip">
-    <string>Connect to Database server</string>
-   </property>
-  </action>
   <action name="actionUpload_new_data">
    <property name="text">
     <string>Upload new data</string>

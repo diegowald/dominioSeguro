@@ -18,7 +18,7 @@ SOURCES += main.cpp\
     dlgvalidateregistration.cpp \
     httprequestworker.cpp \
     csvreader.cpp \
-    recordupdater.cpp \
+    #recordupdater.cpp \
     csvwriter.cpp
 
 HEADERS  += mainwindow.h \
@@ -26,7 +26,7 @@ HEADERS  += mainwindow.h \
     dlgvalidateregistration.h \
     httprequestworker.h \
     csvreader.h \
-    recordupdater.h \
+#    recordupdater.h \
     csvwriter.h
 
 FORMS    += mainwindow.ui \
