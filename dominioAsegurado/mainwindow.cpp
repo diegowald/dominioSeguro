@@ -127,6 +127,7 @@ void MainWindow::on_comboBox_currentIndexChanged(const QString &arg1)
     ui->lblMotor->setText(jsonObj["motor"].toString());
     ui->lblMedioPago->setText(jsonObj["medioPago"].toString());
     ui->lblProductor->setText(jsonObj["Productor"].toString());
+    ui->lblCompania->setText(jsonObj["compania"].toString());
 }
 
 void MainWindow::handle_resultUpdate(HttpRequestWorker *worker)

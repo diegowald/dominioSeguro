@@ -225,15 +225,15 @@ $app->post('/uploadcsv', function() use ($app) {
               $dato->dominio = $data[2];
               $dato->asegurado = $data[3];
               $dato->cobertura = $data[4];
-              $dato->poliza = $data[4];
-              $dato->vigencia_desde = $data[5];
-              $dato->vigencia_hasta  = $data[6];
-              $dato->modelo = $data[7];
-              $dato->anio = $data[8];
-              $dato->chasis = $data[9];
-              $dato->motor  = $data[10];
-              $dato->mediopago = $data[11];
-              $dato->productor = $data[12];
+              $dato->poliza = $data[5];
+              $dato->vigencia_desde = $data[6];
+              $dato->vigencia_hasta  = $data[7];
+              $dato->modelo = $data[8];
+              $dato->anio = $data[9];
+              $dato->chasis = $data[10];
+              $dato->motor  = $data[11];
+              $dato->mediopago = $data[12];
+              $dato->productor = $data[13];
 
               R::store($dato);
             }
