@@ -89,6 +89,7 @@ void MainWindow::on_updateFinished(HttpRequestWorker *worker)
 
 void MainWindow::uploadData()
 {
+    ui->statusBar->showMessage("Actualizando datos", 3);
     QString url = "http://www.hbobroker.com.ar/smartcard/uploadcsv";
 
     HttpRequestInput input(url, "POST");
@@ -154,6 +155,7 @@ void MainWindow::on_uploadCSVfinished(HttpRequestWorker *worker)
         // communication was successful
         QByteArray response = worker->response;
         qDebug() << QString(response);
+        ui->statusBar->showMessage("update Finalizado", 3);
     }
     else
     {
@@ -161,6 +163,8 @@ void MainWindow::on_uploadCSVfinished(HttpRequestWorker *worker)
         QString msg = "Error: " + worker->error_str;
         qDebug() << worker->error_str;
         qDebug() << worker->error_type;
+
+        ui->statusBar->showMessage(msg, 3);
     }
 
     worker->deleteLater();
