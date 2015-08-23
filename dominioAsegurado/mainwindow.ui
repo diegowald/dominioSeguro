@@ -21,6 +21,9 @@
   <property name="autoFillBackground">
    <bool>true</bool>
   </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout_4">
     <property name="spacing">
@@ -47,7 +50,7 @@
        <widget class="QLabel" name="lblTitle">
         <property name="font">
          <font>
-          <pointsize>11</pointsize>
+          <pointsize>12</pointsize>
          </font>
         </property>
         <property name="text">
@@ -104,6 +107,9 @@
       </property>
       <item>
        <widget class="QFrame" name="frame">
+        <property name="styleSheet">
+         <string notr="true">border-color: rgb(76, 43, 223);</string>
+        </property>
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
         </property>
@@ -143,12 +149,17 @@
               <number>2</number>
              </property>
              <item>
-              <widget class="QLabel" name="label">
+              <widget class="QLabel" name="lbltiuloTarjeta">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>10</pointsize>
+                </font>
                </property>
                <property name="text">
                 <string>&lt;b&gt;SEGURO AUTOMOTOR CONFORME DECRETO 1716/08&lt;/b&gt;</string>
@@ -157,23 +168,28 @@
                 <enum>Qt::RichText</enum>
                </property>
                <property name="wordWrap">
-                <bool>true</bool>
+                <bool>false</bool>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="label_2">
+              <widget class="QLabel" name="lblsubtituloTarjeta">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
+               <property name="font">
+                <font>
+                 <pointsize>8</pointsize>
+                </font>
+               </property>
                <property name="text">
                 <string>(Reglamentario de la ley Nacional de Tránsito y Seguridad Vial Nro. 26363)</string>
                </property>
                <property name="wordWrap">
-                <bool>true</bool>
+                <bool>false</bool>
                </property>
               </widget>
              </item>
@@ -214,6 +230,11 @@
            </property>
            <item>
             <widget class="QLabel" name="label_5">
+             <property name="font">
+              <font>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>Asegurado:</string>
              </property>
@@ -221,6 +242,11 @@
            </item>
            <item>
             <widget class="QLabel" name="lblAsegurado">
+             <property name="font">
+              <font>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>&lt;b&gt;BOVO GUSTAVO ALEJANDRO&lt;/b&gt;</string>
              </property>
@@ -251,6 +277,11 @@
            </property>
            <item>
             <widget class="QLabel" name="lblCompany">
+             <property name="font">
+              <font>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>Compañia</string>
              </property>
@@ -258,6 +289,11 @@
            </item>
            <item>
             <widget class="QLabel" name="lblCompania">
+             <property name="font">
+              <font>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>TextLabel</string>
              </property>
@@ -278,6 +314,11 @@
            </item>
            <item>
             <widget class="QLabel" name="label_7">
+             <property name="font">
+              <font>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>Cobertura:</string>
              </property>
@@ -285,10 +326,28 @@
            </item>
            <item>
             <widget class="QLabel" name="lblCobertura">
+             <property name="font">
+              <font>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>T3 - TODO RIESGO C/FRANQUICIA</string>
              </property>
             </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_13">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
            </item>
           </layout>
          </item>
@@ -299,6 +358,11 @@
            </property>
            <item>
             <widget class="QLabel" name="label_9">
+             <property name="font">
+              <font>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>Póliza</string>
              </property>
@@ -306,6 +370,11 @@
            </item>
            <item>
             <widget class="QLabel" name="lblPoliza">
+             <property name="font">
+              <font>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>7857015</string>
              </property>
@@ -326,6 +395,11 @@
            </item>
            <item>
             <widget class="QLabel" name="label_3">
+             <property name="font">
+              <font>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>Vigencia desde</string>
              </property>
@@ -333,6 +407,11 @@
            </item>
            <item>
             <widget class="QLabel" name="lblVigenciaDesde">
+             <property name="font">
+              <font>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>27/01/2015</string>
              </property>
@@ -353,6 +432,11 @@
            </item>
            <item>
             <widget class="QLabel" name="label_11">
+             <property name="font">
+              <font>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>Hasta</string>
              </property>
@@ -360,10 +444,28 @@
            </item>
            <item>
             <widget class="QLabel" name="lblVigenciaHasta">
+             <property name="font">
+              <font>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>27/02/2015</string>
              </property>
             </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_16">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
            </item>
           </layout>
          </item>
@@ -374,6 +476,11 @@
            </property>
            <item>
             <widget class="QLabel" name="label_6">
+             <property name="font">
+              <font>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>Marca</string>
              </property>
@@ -381,13 +488,36 @@
            </item>
            <item>
             <widget class="QLabel" name="lblMarca">
+             <property name="font">
+              <font>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>TextLabel</string>
              </property>
             </widget>
            </item>
            <item>
+            <spacer name="horizontalSpacer_14">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
             <widget class="QLabel" name="label_12">
+             <property name="font">
+              <font>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>Modelo</string>
              </property>
@@ -395,10 +525,28 @@
            </item>
            <item>
             <widget class="QLabel" name="lblModelo">
+             <property name="font">
+              <font>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>PEUGEOT 208 1.5 SP ALLURE TOUCHSCREEN</string>
              </property>
             </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_15">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
            </item>
           </layout>
          </item>
@@ -409,6 +557,11 @@
            </property>
            <item>
             <widget class="QLabel" name="label_14">
+             <property name="font">
+              <font>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>Dominio</string>
              </property>
@@ -416,6 +569,11 @@
            </item>
            <item>
             <widget class="QLabel" name="lblDominio">
+             <property name="font">
+              <font>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;ONE513&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
@@ -436,6 +594,11 @@
            </item>
            <item>
             <widget class="QLabel" name="label_16">
+             <property name="font">
+              <font>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>Año</string>
              </property>
@@ -443,6 +606,11 @@
            </item>
            <item>
             <widget class="QLabel" name="lblAnio">
+             <property name="font">
+              <font>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>2015</string>
              </property>
@@ -470,6 +638,11 @@
            </property>
            <item>
             <widget class="QLabel" name="label_18">
+             <property name="font">
+              <font>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>Chasis</string>
              </property>
@@ -477,6 +650,11 @@
            </item>
            <item>
             <widget class="QLabel" name="lblChasis">
+             <property name="font">
+              <font>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>936CLYFZDFB022922</string>
              </property>
@@ -497,6 +675,11 @@
            </item>
            <item>
             <widget class="QLabel" name="label_20">
+             <property name="font">
+              <font>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>Motor</string>
              </property>
@@ -504,6 +687,11 @@
            </item>
            <item>
             <widget class="QLabel" name="lblMotor">
+             <property name="font">
+              <font>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>10DBSZC001278</string>
              </property>
@@ -531,6 +719,11 @@
            </property>
            <item>
             <widget class="QLabel" name="label_22">
+             <property name="font">
+              <font>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>Paga con</string>
              </property>
@@ -538,15 +731,13 @@
            </item>
            <item>
             <widget class="QLabel" name="lblMedioPago">
+             <property name="font">
+              <font>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>VISA</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="label_24">
-             <property name="text">
-              <string>Productor</string>
              </property>
             </widget>
            </item>
@@ -564,7 +755,24 @@
             </spacer>
            </item>
            <item>
+            <widget class="QLabel" name="label_24">
+             <property name="font">
+              <font>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>Productor</string>
+             </property>
+            </widget>
+           </item>
+           <item>
             <widget class="QLabel" name="lblProductor">
+             <property name="font">
+              <font>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>HBO BROKER</string>
              </property>

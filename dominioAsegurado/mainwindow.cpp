@@ -75,8 +75,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->lblTitle->setText(ui->lblTitle->text() + "DEMO");
 #endif
 
-    QString s = "QLabel { background-color : white; color : black; }";
-    ui->lblTitle->setStyleSheet(s);
+
+
+    QString s = "QLabel { background-color : silver; color : black; }";
     ui->lblAsegurado->setStyleSheet(s);
     ui->lblCompania->setStyleSheet(s);
     ui->lblCobertura->setStyleSheet(s);
@@ -92,11 +93,25 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->lblMedioPago->setStyleSheet(s);
     ui->lblProductor->setStyleSheet(s);
 
+    s = "QLabel { background-color : transparent; color : darkred; }";
+    ui->lblTitle->setStyleSheet(s);
+
+    s = "QLabel { background-color : white; color : blue; }";
+    ui->lbltiuloTarjeta->setStyleSheet(s);
+    ui->lblsubtituloTarjeta->setStyleSheet(s);
+
+    QString sf = "QFrame { background-color : white; color : black; }";
+    ui->frame->setStyleSheet(sf);
+
     s = "QToolButton { background-color : yellow; color : black; }";
     ui->btnCrane->setStyleSheet(s);
     ui->btnCrash->setStyleSheet(s);
     ui->btnFeedback->setStyleSheet(s);
     ui->btnInformation->setStyleSheet(s);
+
+    s = "MainWindow { background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255)); }";
+    setStyleSheet(s);
+
     QSize sz;
     sz.setWidth(_screenTools.mm2pix(8));
     sz.setHeight(_screenTools.mm2pix(8));
@@ -105,6 +120,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->btnFeedback->setIconSize(sz);
     ui->btnInformation->setIconSize(sz);
     ui->btnGetInformationUpdates->setIconSize(sz);
+
+    // Deshabilitar por ahora
+    ui->btnCrane->setEnabled(false);
+    ui->btnCrash->setEnabled(false);
+    ui->btnFeedback->setEnabled(false);
+    ui->btnInformation->setEnabled(false);
 }
 
 MainWindow::~MainWindow()
