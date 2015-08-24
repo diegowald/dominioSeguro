@@ -119,7 +119,7 @@ QString MainWindow::transformCSV()
 
     header << "compania" << "dni" << "dominio" << "asegurado"
            << "cobertura" << "poliza" << "vigencia_desde"
-           << "vigencia_hasta" << "modelo" << "anio"
+           << "vigencia_hasta" << "marca" << "modelo" << "anio"
            << "chasis" << "motor" << "medioPago" << "Productor";
 
     writer.setHeaders(header);
@@ -136,6 +136,7 @@ QString MainWindow::transformCSV()
                << rec.at(1)
                << rec.at(4)
                << rec.at(5)
+               << rec.at(10)
                << rec.at(11)
                << rec.at(12)
                << rec.at(15)
@@ -193,7 +194,7 @@ void MainWindow::on_statsReceived(HttpRequestWorker *worker)
     {
         // communication was successful
         QByteArray response = worker->response;
-
+qDebug() << response;
         QJsonDocument jsonDoc = QJsonDocument::fromJson(response);
         if (jsonDoc.isArray())
         {
