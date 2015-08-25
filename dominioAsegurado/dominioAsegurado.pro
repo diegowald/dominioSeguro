@@ -44,7 +44,25 @@ DISTFILES += \
     android/res/values/libs.xml \
     android/build.gradle \
     android/gradle/wrapper/gradle-wrapper.properties \
-    android/gradlew.bat
+    android/gradlew.bat \
+    ../imagenes/asociart.gif \
+    ../imagenes/el_surco.gif \
+    ../imagenes/Prudencia.gif \
+    ../imagenes/RSA.gif \
+    ../imagenes/smg-seguros.gif \
+    ../imagenes/Berkley.jpg \
+    ../imagenes/federacion_patronal.jpg \
+    ../imagenes/galeno_art.jpg \
+    ../imagenes/integrity.jpg \
+    ../imagenes/mercantil_andina.jpg \
+    ../imagenes/parana_seguros.jpg \
+    ../imagenes/Prevencion.jpg \
+    ../imagenes/provart.jpg \
+    ../imagenes/Provincia.jpg \
+    ../imagenes/qbe.jpeg \
+    ../imagenes/Sancor-Seguros.jpg \
+    ../imagenes/seguros_ravadavia.jpg \
+    ../imagenes/SMGART.jpg
 
 ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 

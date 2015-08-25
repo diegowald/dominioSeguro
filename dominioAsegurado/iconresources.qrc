@@ -14,4 +14,24 @@
         <file alias="grua">grua.png</file>
         <file alias="info">info.png</file>
     </qresource>
+    <qresource prefix="/img">
+        <file alias="asociart">asociart.png</file>
+        <file alias="berkley">Berkley.png</file>
+        <file alias="elsurco">el_surco.png</file>
+        <file alias="federacionpatronal">federacion_patronal.png</file>
+        <file alias="galenoart">galeno_art.png</file>
+        <file alias="integrity">integrity.png</file>
+        <file alias="mercantilandina">mercantil_andina.png</file>
+        <file alias="paranaseguros">parana_seguros.png</file>
+        <file alias="prevencion">Prevencion.png</file>
+        <file alias="provart">provart.png</file>
+        <file alias="provincia">Provincia.png</file>
+        <file alias="prudencia">Prudencia.png</file>
+        <file alias="qbe">qbe.png</file>
+        <file alias="rsa">RSA.png</file>
+        <file alias="sancorseguros">Sancor-Seguros.png</file>
+        <file alias="segurosrivadavia">seguros_ravadavia.png</file>
+        <file alias="smgart">SMGART.png</file>
+        <file alias="smgseguros">smg-seguros.png</file>
+    </qresource>
 </RCC>

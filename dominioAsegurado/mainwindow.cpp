@@ -137,6 +137,7 @@ void MainWindow::on_comboBox_currentIndexChanged(const QString &arg1)
 {
     QJsonObject jsonObj = dominiosAsegurados[arg1];
     ui->lblCompania->setText(jsonObj["compania"].toString());
+    setLogo(jsonObj["compania"].toString());
     ui->lblAnio->setText(jsonObj["anio"].toString());
     ui->lblAsegurado->setText(jsonObj["asegurado"].toString());
     ui->lblDominio->setText(jsonObj["dominio"].toString());
@@ -333,4 +334,47 @@ void MainWindow::on_btnInformation_pressed()
 {
     DlgNotImplemented dlg(this);
     dlg.exec();
+}
+
+void MainWindow::setLogo(const QString &compania)
+{
+    QString picName = "";
+    if (compania == "ROYAL SUNALLIANCE SEG. ARG. SA")
+    {
+        picName = ":/img/rsa";
+    }
+    else if (compania == "PARANA SEGUROS")
+    {
+        picName = ":/img/paranaseguros";
+    }
+    else if (compania == "INTEGRITY SEGUROS")
+    {
+        picName = ":/img/integrity";
+    }
+    else if (compania == "FEDERACION PATRONAL S.A.")
+    {
+        picName = ":/img/federacionpatronal";
+    }
+    else if (compania == "SANCOR COOPERATIVA DE SEG LTDA")
+    {
+        picName = ":/img/sancorseguros";
+    }
+    else if (compania == "PROVINCIA SEGUROS S.A.")
+    {
+        picName = ":/img/provincia";
+    }
+    else if (compania == "QBE SEGUROS LA BUENOS AIRES")
+    {
+        picName = ":/img/qbe";
+    }
+    else if (compania == "BERKLEY INTERNATIONAL SEG S.A")
+    {
+        picName = ":/img/berkley";
+    }
+    else if (compania == "SEGUROS RIVADAVIA")
+    {
+        picName = ":/img/segurosrivadavia";
+    }
+    QPixmap pix(picName);
+    ui->lblLogo->setPixmap(pix);
 }
