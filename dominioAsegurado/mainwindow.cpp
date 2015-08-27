@@ -41,6 +41,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->lblMedioPago->clear();
     ui->lblProductor->clear();
     ui->comboBox->clear();
+    ui->lblLogo->clear();
     dominiosAsegurados.clear();
     _fileDataLocation = QString("%1/%2")
             .arg(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation))
@@ -109,8 +110,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->btnFeedback->setStyleSheet(s);
     ui->btnInformation->setStyleSheet(s);
 
-    s = "MainWindow { background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255)); }";
-    setStyleSheet(s);
+    QPalette* palette = new QPalette();
+    QLinearGradient linearGradient(QPointF(0, 0), geometry().bottomRight());
+    linearGradient.setColorAt(0, Qt::lightGray);
+    linearGradient.setColorAt(1, Qt::white);
+    palette->setBrush(QPalette::Window,*(new QBrush(linearGradient)));
+    setPalette(*palette);
+
 
     QSize sz;
     sz.setWidth(_screenTools.mm2pix(8));
@@ -138,6 +144,7 @@ void MainWindow::on_comboBox_currentIndexChanged(const QString &arg1)
     QJsonObject jsonObj = dominiosAsegurados[arg1];
     ui->lblCompania->setText(jsonObj["compania"].toString());
     setLogo(jsonObj["compania"].toString());
+    ui->lblMarca->setText(jsonObj["marca"].toString());
     ui->lblAnio->setText(jsonObj["anio"].toString());
     ui->lblAsegurado->setText(jsonObj["asegurado"].toString());
     ui->lblDominio->setText(jsonObj["dominio"].toString());
@@ -374,6 +381,10 @@ void MainWindow::setLogo(const QString &compania)
     else if (compania == "SEGUROS RIVADAVIA")
     {
         picName = ":/img/segurosrivadavia";
+    }
+    else
+    {
+        picName = "";
     }
     QPixmap pix(picName);
     ui->lblLogo->setPixmap(pix);
