@@ -352,7 +352,7 @@ void MainWindow::setLogo(const QString &compania)
     }
     else if (compania == "PARANA SEGUROS")
     {
-        picName = ":/img/paranaseguros";
+        picName = ":/img/parana";
     }
     else if (compania == "INTEGRITY SEGUROS")
     {
@@ -364,7 +364,7 @@ void MainWindow::setLogo(const QString &compania)
     }
     else if (compania == "SANCOR COOPERATIVA DE SEG LTDA")
     {
-        picName = ":/img/sancorseguros";
+        picName = ":/img/sancor";
     }
     else if (compania == "PROVINCIA SEGUROS S.A.")
     {
@@ -380,7 +380,7 @@ void MainWindow::setLogo(const QString &compania)
     }
     else if (compania == "SEGUROS RIVADAVIA")
     {
-        picName = ":/img/segurosrivadavia";
+        picName = ":/img/rivadavia";
     }
     else
     {
