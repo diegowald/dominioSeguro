@@ -1,39 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>DlgRegistration</class>
- <widget class="QDialog" name="DlgRegistration">
+ <class>DialogLIstaDNIS</class>
+ <widget class="QDialog" name="DialogLIstaDNIS">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>480</width>
-    <height>640</height>
+    <width>400</width>
+    <height>386</height>
    </rect>
   </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
-  </property>
   <property name="windowTitle">
-   <string>Registrese</string>
+   <string>Dialog</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QFormLayout" name="formLayout">
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_2">
+    <widget class="QListWidget" name="lstDocuments"/>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="label">
        <property name="text">
         <string>Documento</string>
        </property>
-       <property name="buddy">
-        <cstring>txtDocumento</cstring>
-       </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="txtDocumento"/>
+     <item>
+      <widget class="QLineEdit" name="txtDocument"/>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnAddDocument">
+       <property name="text">
+        <string>Agregar</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -54,12 +55,12 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>DlgRegistration</receiver>
+   <receiver>DialogLIstaDNIS</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>247</x>
-     <y>604</y>
+     <x>248</x>
+     <y>254</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -70,12 +71,12 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>DlgRegistration</receiver>
+   <receiver>DialogLIstaDNIS</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>315</x>
-     <y>604</y>
+     <x>316</x>
+     <y>260</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>

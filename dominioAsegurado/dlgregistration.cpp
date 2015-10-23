@@ -19,8 +19,3 @@ QString DlgRegistration::dni() const
 {
     return ui->txtDocumento->text();
 }
-
-QString DlgRegistration::nombre() const
-{
-    return ui->txtNombre->text();
-}

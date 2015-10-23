@@ -13,6 +13,7 @@
 
 #include "dlgnotimplemented.h"
 #include "dlgregistration.h"
+#include "dialoglistadnis.h"
 
 #include <QMessageBox>
 #include <QStandardPaths>
@@ -78,7 +79,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
 
-    QString s = "QLabel { background-color : silver; color : black; }";
+    QString s = "QLabel { background-color : #f0f0f0; color : black; }";
     ui->lblAsegurado->setStyleSheet(s);
     ui->lblCompania->setStyleSheet(s);
     ui->lblCobertura->setStyleSheet(s);
@@ -126,6 +127,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->btnFeedback->setIconSize(sz);
     ui->btnInformation->setIconSize(sz);
     ui->btnGetInformationUpdates->setIconSize(sz);
+
+    ui->lblLogo->setScaledContents(true);
+    ui->lblLogo->setMaximumHeight(_screenTools.mm2pix(12));
+    ui->lblLogo->setMaximumWidth(_screenTools.mm2pix(12) * 450 / 248);
+
+
 
     // Deshabilitar por ahora
     ui->btnCrane->setEnabled(false);
@@ -201,17 +208,41 @@ void MainWindow::loadJsonSettings(QJsonDocument &jsonDoc)
 {
     if (jsonDoc.isArray())
     {
-        QJsonObject jsonObj = jsonDoc.array().at(0).toObject();
-        _dniAsociado = jsonObj["dni"].toString();
+        for (int i = 0; i < jsonDoc.array().count(); ++i)
+        {
+            QJsonObject jsonObj = jsonDoc.array().at(0).toObject();
+            QString dniAsociado = jsonObj["dni"].toString();
+            _dnisAsociado.append(dniAsociado);
+        }
     }
 }
 
 
+void MainWindow::on_RequestRegistration(const QString &DNI)
+{
+    QString url_str = "http://www.hbobroker.com.ar/smartcard"
+                      "/register";
 
+    HttpRequestInput input(url_str, "POST");
+
+    input.add_var("dni", DNI);
+    input.add_var("celular", "");
+    input.add_var("nombre", "");
+    input.add_var("fechaSolicitud", QDate::currentDate().toString("yyyy-MM-dd"));
+
+    HttpRequestWorker *worker = new HttpRequestWorker(this);
+    connect(worker, SIGNAL(on_execution_finished(HttpRequestWorker*)), this, SLOT(handle_resultRegistration(HttpRequestWorker*)));
+    worker->execute(&input);
+}
 
 
 void MainWindow::registrar()
 {
+    DialogLIstaDNIS dlg1(this);
+    connect(&dlg1, &DialogLIstaDNIS::requestRegistration, this, &MainWindow::on_RequestRegistration);
+    if (dlg1.exec() == QDialog::Accepted)
+    {
+    }
     DlgRegistration dlg(false, this);
     if (dlg.exec() == QDialog::Accepted)
     {
@@ -231,7 +262,7 @@ void MainWindow::registrar()
 
         input.add_var("dni", dlg.dni());
         input.add_var("celular", "");
-        input.add_var("nombre", dlg.nombre());
+        input.add_var("nombre", "");
         input.add_var("fechaSolicitud", QDate::currentDate().toString("yyyy-MM-dd"));
 
         HttpRequestWorker *worker = new HttpRequestWorker(this);
@@ -253,6 +284,8 @@ void MainWindow::handle_resultRegistration(HttpRequestWorker *worker)
         QFile jsonFile(_settingsLocation);
         jsonFile.open(QFile::WriteOnly);
         jsonFile.write(jsonDoc.toJson());
+        QMessageBox::information(this, "", jsonDoc.toJson());
+        qDebug() << jsonDoc.toJson();
         on_btnGetInformationUpdates_pressed();
     }
     else
@@ -265,11 +298,8 @@ void MainWindow::handle_resultRegistration(HttpRequestWorker *worker)
 
 void MainWindow::on_btnGetInformationUpdates_pressed()
 {
-    if (_dniAsociado.length() == 0)
-    {
-        registrar();
-    }
-    else
+    DialogLIstaDNIS dlg(this);
+    if (dlg.exec() == QDialog::Accepted)
     {
 #ifdef DEMO
         QString json = "[{\"id\":\"1\",\"dni\":\"22943587\",\"dominio\":\"ESK624\",\"asegurado\":\"diego\",\"cobertura\":\"w\",\"poliza\":\"asd\",\"vigencia_desde\":\"1\/1\/2015\",\"vigencia_hasta\":\"31\/12\/2015\",\"modelo\":\"ads\",\"anio\":\"asd\",\"chasis\":\"qe\",\"motor\":\"qwe\",\"medioPago\":\"qwe\",\"Productor\":\"qwe\"},{\"id\":\"2\",\"dni\":\"22943587\",\"dominio\":\"qwe\",\"asegurado\":\"diego\",\"cobertura\":\"654\",\"poliza\":\"89\",\"vigencia_desde\":\"654\",\"vigencia_hasta\":\"89\",\"modelo\":\"684\",\"anio\":\"684\",\"chasis\":\"684\",\"motor\":\"684\",\"medioPago\":\"684\",\"Productor\":\"648\"}]";
@@ -282,7 +312,8 @@ void MainWindow::on_btnGetInformationUpdates_pressed()
         jsonFile.open(QFile::WriteOnly);
         jsonFile.write(jsonDoc.toJson());
 #else
-        QString url_str = "http://www.hbobroker.com.ar/smartcard/datos/" + _dniAsociado;
+        QString dnis = _dnisAsociado.join(',');
+        QString url_str = "http://www.hbobroker.com.ar/smartcard/datosMultiDNI/" + dnis;
 
         HttpRequestInput input(url_str, "GET");
 

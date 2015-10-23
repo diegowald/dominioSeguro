@@ -16,7 +16,6 @@ public:
     ~DlgRegistration();
 
     QString dni() const;
-    QString nombre() const;
 
 private slots:
 

@@ -37,13 +37,15 @@ private slots:
     void on_btnCrash_pressed();
     void on_btnFeedback_pressed();
     void on_btnInformation_pressed();
+    void on_RequestRegistration(const QString &DNI);
 
 private:
     Ui::MainWindow *ui;
     QMap<QString, QJsonObject> dominiosAsegurados;
     QString _fileDataLocation;
     QString _settingsLocation;
-    QString _dniAsociado;
+    //QString _dniAsociado;
+    QStringList _dnisAsociado;
     ScreenTools _screenTools;
 };
 

@@ -19,17 +19,20 @@ SOURCES += main.cpp\
     dlgnotimplemented.cpp \
     httprequestworker.cpp \
     dlgregistration.cpp \
-    screentools.cpp
+    screentools.cpp \
+    dialoglistadnis.cpp
 
 HEADERS  += mainwindow.h \
     dlgnotimplemented.h \
     httprequestworker.h \
     dlgregistration.h \
-    screentools.h
+    screentools.h \
+    dialoglistadnis.h
 
 FORMS    += mainwindow.ui \
     dlgnotimplemented.ui \
-    dlgregistration.ui
+    dlgregistration.ui \
+    dialoglistadnis.ui
 
 CONFIG += mobility
 MOBILITY = 
