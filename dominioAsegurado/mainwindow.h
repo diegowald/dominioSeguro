@@ -24,7 +24,6 @@ private:
     void loadJson(QJsonDocument &jsonDoc);
     void loadJsonSettings(QJsonDocument &jsonDoc);
 
-    void registrar();
     void setLogo(const QString &compania);
 private slots:
 
@@ -44,7 +43,6 @@ private:
     QMap<QString, QJsonObject> dominiosAsegurados;
     QString _fileDataLocation;
     QString _settingsLocation;
-    //QString _dniAsociado;
     QStringList _dnisAsociado;
     ScreenTools _screenTools;
 };

@@ -19,12 +19,41 @@ void DialogLIstaDNIS::on_btnAddDocument_released()
     QString dni = ui->txtDocument->text().trimmed();
     if (dni.length() > 0)
     {
-        QList<QListWidgetItem*> items = ui->lstDocuments->findItems(dni, Qt::MatchExactly);
-        if (items.count() == 0)
+        if (addDNIToList(dni))
         {
-            QListWidgetItem* item = new QListWidgetItem(ui->txtDocument->text().trimmed());
-            ui->lstDocuments->addItem(item);
             emit requestRegistration(dni);
         }
     }
+}
+
+QStringList DialogLIstaDNIS::dnis()
+{
+    QStringList dnis;
+    for (int i = 0; i < ui->lstDocuments->count(); ++i)
+    {
+        QListWidgetItem *item = ui->lstDocuments->item(i);
+        dnis.append(item->text());
+    }
+    return dnis;
+}
+
+void DialogLIstaDNIS::setDNIs(QStringList &documentos)
+{
+    ui->lstDocuments->clear();
+    foreach (QString dni, documentos)
+    {
+        addDNIToList(dni);
+    }
+}
+
+bool DialogLIstaDNIS::addDNIToList(const QString &dni)
+{
+    QList<QListWidgetItem*> items = ui->lstDocuments->findItems(dni, Qt::MatchExactly);
+    if (items.count() == 0)
+    {
+        QListWidgetItem* item = new QListWidgetItem(dni);
+        ui->lstDocuments->addItem(item);
+        return true;
+    }
+    return false;
 }

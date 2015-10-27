@@ -44,6 +44,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->comboBox->clear();
     ui->lblLogo->clear();
     dominiosAsegurados.clear();
+
     _fileDataLocation = QString("%1/%2")
             .arg(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation))
             .arg("data.json");
@@ -67,6 +68,7 @@ MainWindow::MainWindow(QWidget *parent) :
         QFile jsonFile(_settingsLocation);
         jsonFile.open(QFile::ReadOnly);
         QJsonDocument jsonDoc = QJsonDocument().fromJson(jsonFile.readAll());
+        qDebug() << jsonDoc.toJson();
         loadJsonSettings(jsonDoc);
     }
     else
@@ -175,13 +177,24 @@ void MainWindow::handle_resultUpdate(HttpRequestWorker *worker)
         QByteArray response = worker->response;
 
         ui->comboBox->clear();
-        dominiosAsegurados.clear();
+        //dominiosAsegurados.clear();
 
         QJsonDocument jsonDoc = QJsonDocument::fromJson(response);
         loadJson(jsonDoc);
+
         QFile jsonFile(_fileDataLocation);
         jsonFile.open(QFile::WriteOnly);
-        jsonFile.write(jsonDoc.toJson());
+
+        QJsonDocument json2Write;
+        QJsonArray array;
+        foreach (QJsonObject jsonObj, dominiosAsegurados.values())
+        {
+            array.append(jsonObj);
+        }
+        json2Write.setArray(array);
+
+        //jsonFile.write(jsonDoc.toJson());
+        jsonFile.write(json2Write.toJson());
     }
     else
     {
@@ -199,8 +212,13 @@ void MainWindow::loadJson(QJsonDocument &jsonDoc)
         {
             QJsonObject jsonObj = jsonDoc.array()[index].toObject();
             dominiosAsegurados[jsonObj["dominio"].toString()] = jsonObj;
-            ui->comboBox->addItem(jsonObj["dominio"].toString(), jsonObj);
         }
+    }
+
+    ui->comboBox->clear();
+    foreach (QJsonObject jsonObj, dominiosAsegurados.values())
+    {
+        ui->comboBox->addItem(jsonObj["dominio"].toString(), jsonObj);
     }
 }
 
@@ -210,9 +228,12 @@ void MainWindow::loadJsonSettings(QJsonDocument &jsonDoc)
     {
         for (int i = 0; i < jsonDoc.array().count(); ++i)
         {
-            QJsonObject jsonObj = jsonDoc.array().at(0).toObject();
+            QJsonObject jsonObj = jsonDoc.array().at(i).toObject();
             QString dniAsociado = jsonObj["dni"].toString();
-            _dnisAsociado.append(dniAsociado);
+            if (dniAsociado.trimmed().length() > 0)
+            {
+                _dnisAsociado.append(dniAsociado);
+            }
         }
     }
 }
@@ -236,42 +257,6 @@ void MainWindow::on_RequestRegistration(const QString &DNI)
 }
 
 
-void MainWindow::registrar()
-{
-    DialogLIstaDNIS dlg1(this);
-    connect(&dlg1, &DialogLIstaDNIS::requestRegistration, this, &MainWindow::on_RequestRegistration);
-    if (dlg1.exec() == QDialog::Accepted)
-    {
-    }
-    DlgRegistration dlg(false, this);
-    if (dlg.exec() == QDialog::Accepted)
-    {
-#ifdef DEMO
-        QString json = "[{\"id\": \"1\", \"dni\": \"22943587\", \"celular\": \"2914139389\", \"nombre\": \"diego\", \"fecha_solicitud\": \"2015-07-18\", \"fecha_registracion\": null }]";
-        QJsonDocument jsonDoc = QJsonDocument::fromJson(json.toUtf8());
-        loadJsonSettings(jsonDoc);
-        QFile jsonFile(_settingsLocation);
-        jsonFile.open(QFile::WriteOnly);
-        jsonFile.write(jsonDoc.toJson());
-        on_btnGetInformationUpdates_pressed();
-#else
-        QString url_str = "http://www.hbobroker.com.ar/smartcard"
-                          "/register";
-
-        HttpRequestInput input(url_str, "POST");
-
-        input.add_var("dni", dlg.dni());
-        input.add_var("celular", "");
-        input.add_var("nombre", "");
-        input.add_var("fechaSolicitud", QDate::currentDate().toString("yyyy-MM-dd"));
-
-        HttpRequestWorker *worker = new HttpRequestWorker(this);
-        connect(worker, SIGNAL(on_execution_finished(HttpRequestWorker*)), this, SLOT(handle_resultRegistration(HttpRequestWorker*)));
-        worker->execute(&input);
-#endif
-    }
-}
-
 void MainWindow::handle_resultRegistration(HttpRequestWorker *worker)
 {
     if (worker->error_type == QNetworkReply::NoError)
@@ -283,10 +268,18 @@ void MainWindow::handle_resultRegistration(HttpRequestWorker *worker)
         loadJsonSettings(jsonDoc);
         QFile jsonFile(_settingsLocation);
         jsonFile.open(QFile::WriteOnly);
-        jsonFile.write(jsonDoc.toJson());
-        QMessageBox::information(this, "", jsonDoc.toJson());
-        qDebug() << jsonDoc.toJson();
-        on_btnGetInformationUpdates_pressed();
+
+        QJsonDocument json2Write;
+        QJsonArray array;
+        foreach (QString dni, _dnisAsociado)
+        {
+            QJsonObject jsonObj;
+            jsonObj["dni"] = dni;
+            array.append(jsonObj);
+        }
+        json2Write.setArray(array);
+
+        jsonFile.write(json2Write.toJson());
     }
     else
     {
@@ -299,6 +292,8 @@ void MainWindow::handle_resultRegistration(HttpRequestWorker *worker)
 void MainWindow::on_btnGetInformationUpdates_pressed()
 {
     DialogLIstaDNIS dlg(this);
+    connect(&dlg, &DialogLIstaDNIS::requestRegistration, this, &MainWindow::on_RequestRegistration);
+    dlg.setDNIs(_dnisAsociado);
     if (dlg.exec() == QDialog::Accepted)
     {
 #ifdef DEMO
@@ -312,14 +307,17 @@ void MainWindow::on_btnGetInformationUpdates_pressed()
         jsonFile.open(QFile::WriteOnly);
         jsonFile.write(jsonDoc.toJson());
 #else
-        QString dnis = _dnisAsociado.join(',');
-        QString url_str = "http://www.hbobroker.com.ar/smartcard/datosMultiDNI/" + dnis;
+        _dnisAsociado = dlg.dnis();
+        foreach (QString dni, _dnisAsociado)
+        {
+            QString url_str = "http://www.hbobroker.com.ar/smartcard/datos/" + dni;
 
-        HttpRequestInput input(url_str, "GET");
+            HttpRequestInput input(url_str, "GET");
 
-        HttpRequestWorker *worker = new HttpRequestWorker(this);
-        connect(worker, SIGNAL(on_execution_finished(HttpRequestWorker*)), this, SLOT(handle_resultUpdate(HttpRequestWorker*)));
-        worker->execute(&input);
+            HttpRequestWorker *worker = new HttpRequestWorker(this);
+            connect(worker, SIGNAL(on_execution_finished(HttpRequestWorker*)), this, SLOT(handle_resultUpdate(HttpRequestWorker*)));
+            worker->execute(&input);
+        }
 #endif
     }
 }
