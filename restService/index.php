@@ -18,7 +18,7 @@ $app = new \Slim\Slim();
 // handle get request for /dni
 $app->get('/datos', function() use ($app) {
   // query database for all dnis
-  $dnis = R::find('datos');
+  $dnis = R::findOne('datos');
 
   // send response header for JSON content type
   $app->response()->header('Content-Type', 'application/json');
@@ -65,9 +65,12 @@ $app->post('/register', function() use ($app) {
     $regForm->fechaRegistracion = null;
     $id = R::store($regForm);
 
+    // find a record with taht dni
+    $dato = R::findOne('datos', ' dni = ? ', [ (string)$input['dni'] ]);
     // return JSON-encoded response body
+
     $app->response()->header('Content-Type', 'application/json');
-    echo json_encode(R::exportAll($regForm));
+    echo json_encode(R::exportAll($dato));
 
   } catch (Exception $e) {
     $app->response()->status(400);

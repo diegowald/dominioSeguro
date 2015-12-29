@@ -38,6 +38,17 @@ $app->get('/datos/:dni', function($dni) use ($app) {
   echo json_encode(R::exportAll($datos));
 })->conditions(array('dni' => '([0-9]{8})'));
 
+$app->get('/datosMultiDNI/:dnis', function($dnis) use ($app) {
+  // query database for all data with specific dni
+  $datos = R::find('datos', ' dni in (?) ', [ $dnis ]);
+
+  // send response header for JSON content type
+  $app->response()->header('Content-Type', 'application/json');
+
+  // return JSON-encoded response body with query results
+  echo json_encode(R::exportAll($datos));
+});
+
 $app->post('/register', function() use ($app) {
   try {
     // get and decode JSON request body
@@ -54,9 +65,12 @@ $app->post('/register', function() use ($app) {
     $regForm->fechaRegistracion = null;
     $id = R::store($regForm);
 
+    // find a record with taht dni
+    $dato = R::findOne('datos', ' dni = ? ', [ (string)$input['dni'] ]);
     // return JSON-encoded response body
+
     $app->response()->header('Content-Type', 'application/json');
-    echo json_encode(R::exportAll($regForm));
+    echo json_encode(R::exportAll($dato));
 
   } catch (Exception $e) {
     $app->response()->status(400);

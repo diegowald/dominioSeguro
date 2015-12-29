@@ -19,39 +19,44 @@ void DialogLIstaDNIS::on_btnAddDocument_released()
     QString dni = ui->txtDocument->text().trimmed();
     if (dni.length() > 0)
     {
-        if (addDNIToList(dni))
+        if (addDNIToList(dni, ""))
         {
             emit requestRegistration(dni);
         }
     }
 }
 
-QStringList DialogLIstaDNIS::dnis()
+QMap<QString, QString> DialogLIstaDNIS::dnis()
 {
-    QStringList dnis;
+    QMap<QString, QString> dnis;
     for (int i = 0; i < ui->lstDocuments->count(); ++i)
     {
         QListWidgetItem *item = ui->lstDocuments->item(i);
-        dnis.append(item->text());
+        //dnis.append(item->text());
+        QStringList values = item->text().split(" - ");
+        dnis[values.at(0)] = values.at(1);
     }
     return dnis;
 }
 
-void DialogLIstaDNIS::setDNIs(QStringList &documentos)
+void DialogLIstaDNIS::setDNIs(QMap<QString, QString> &documentos)
 {
     ui->lstDocuments->clear();
-    foreach (QString dni, documentos)
+    foreach (QString dni, documentos.keys())
     {
-        addDNIToList(dni);
+        addDNIToList(dni, documentos[dni]);
     }
 }
 
-bool DialogLIstaDNIS::addDNIToList(const QString &dni)
+bool DialogLIstaDNIS::addDNIToList(const QString &dni, const QString &nombre)
 {
-    QList<QListWidgetItem*> items = ui->lstDocuments->findItems(dni, Qt::MatchExactly);
+    QString format = "%1 - %2";
+    QString text = format.arg(dni).arg(nombre);
+    QList<QListWidgetItem*> items = ui->lstDocuments->findItems(text, Qt::MatchExactly);
     if (items.count() == 0)
     {
-        QListWidgetItem* item = new QListWidgetItem(dni);
+        QListWidgetItem* item = new QListWidgetItem(text);
+        item->setData(Qt::UserRole, dni);
         ui->lstDocuments->addItem(item);
         return true;
     }

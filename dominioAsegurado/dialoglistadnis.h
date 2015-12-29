@@ -15,8 +15,8 @@ public:
     explicit DialogLIstaDNIS(QWidget *parent = 0);
     ~DialogLIstaDNIS();
 
-    QStringList dnis();
-    void setDNIs(QStringList &documentos);
+    QMap<QString, QString> dnis();
+    void setDNIs(QMap<QString, QString> &documentos);
 private slots:
     void on_btnAddDocument_released();
 
@@ -24,7 +24,7 @@ signals:
     void requestRegistration(const QString &DNI);
 
 private:
-    bool addDNIToList(const QString &dni);
+    bool addDNIToList(const QString &dni, const QString &nombre);
 
 private:
     Ui::DialogLIstaDNIS *ui;

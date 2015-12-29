@@ -13,7 +13,6 @@
 
 #include "dlgnotimplemented.h"
 #include "dlgregistration.h"
-#include "dialoglistadnis.h"
 
 #include <QMessageBox>
 #include <QStandardPaths>
@@ -51,9 +50,12 @@ MainWindow::MainWindow(QWidget *parent) :
     if (!_fileDataLocation.isEmpty())
     {
         QFile jsonFile(_fileDataLocation);
-        jsonFile.open(QFile::ReadOnly);
-        QJsonDocument jsonDoc = QJsonDocument().fromJson(jsonFile.readAll());
-        loadJson(jsonDoc);
+        if (jsonFile.exists())
+        {
+            jsonFile.open(QFile::ReadOnly);
+            QJsonDocument jsonDoc = QJsonDocument().fromJson(jsonFile.readAll());
+            loadJson(jsonDoc);
+        }
     }
     else
     {
@@ -66,10 +68,13 @@ MainWindow::MainWindow(QWidget *parent) :
     if (!_settingsLocation.isEmpty())
     {
         QFile jsonFile(_settingsLocation);
-        jsonFile.open(QFile::ReadOnly);
-        QJsonDocument jsonDoc = QJsonDocument().fromJson(jsonFile.readAll());
-        qDebug() << jsonDoc.toJson();
-        loadJsonSettings(jsonDoc);
+        if (jsonFile.exists())
+        {
+            jsonFile.open(QFile::ReadOnly);
+            QJsonDocument jsonDoc = QJsonDocument().fromJson(jsonFile.readAll());
+            qDebug() << jsonDoc.toJson();
+            loadJsonSettings(jsonDoc);
+        }
     }
     else
     {
@@ -141,6 +146,15 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->btnCrash->setEnabled(false);
     ui->btnFeedback->setEnabled(false);
     ui->btnInformation->setEnabled(false);
+
+    _dlgListadoDNIS = NULL;
+
+    ui->lblSpinner->clear();
+    _spinnerMovie = new QMovie(":/img/spinner");
+    ui->lblSpinner->setMovie(_spinnerMovie);
+    s = "QLabel { background-color : transparent; color : darkred; }";
+    ui->lblSpinner->setStyleSheet(s);
+    ui->lblSpinner->setVisible(false);
 }
 
 MainWindow::~MainWindow()
@@ -171,6 +185,7 @@ void MainWindow::on_comboBox_currentIndexChanged(const QString &arg1)
 
 void MainWindow::handle_resultUpdate(HttpRequestWorker *worker)
 {
+    stopSpinner();
     if (worker->error_type == QNetworkReply::NoError)
     {
         // communication was successful
@@ -230,9 +245,10 @@ void MainWindow::loadJsonSettings(QJsonDocument &jsonDoc)
         {
             QJsonObject jsonObj = jsonDoc.array().at(i).toObject();
             QString dniAsociado = jsonObj["dni"].toString();
+            QString nombre = jsonObj["asegurado"].toString();
             if (dniAsociado.trimmed().length() > 0)
             {
-                _dnisAsociado.append(dniAsociado);
+                _dnisAsociado[dniAsociado] = nombre;
             }
         }
     }
@@ -254,11 +270,13 @@ void MainWindow::on_RequestRegistration(const QString &DNI)
     HttpRequestWorker *worker = new HttpRequestWorker(this);
     connect(worker, SIGNAL(on_execution_finished(HttpRequestWorker*)), this, SLOT(handle_resultRegistration(HttpRequestWorker*)));
     worker->execute(&input);
+    startSpinner();
 }
 
 
 void MainWindow::handle_resultRegistration(HttpRequestWorker *worker)
 {
+    stopSpinner();
     if (worker->error_type == QNetworkReply::NoError)
     {
         // communication was successful
@@ -271,15 +289,20 @@ void MainWindow::handle_resultRegistration(HttpRequestWorker *worker)
 
         QJsonDocument json2Write;
         QJsonArray array;
-        foreach (QString dni, _dnisAsociado)
+        foreach (QString dni, _dnisAsociado.keys())
         {
             QJsonObject jsonObj;
             jsonObj["dni"] = dni;
+            jsonObj["asegurado"] = _dnisAsociado[dni];
             array.append(jsonObj);
         }
         json2Write.setArray(array);
 
         jsonFile.write(json2Write.toJson());
+        if (_dlgListadoDNIS != NULL)
+        {
+            _dlgListadoDNIS->setDNIs(_dnisAsociado);
+        }
     }
     else
     {
@@ -291,10 +314,11 @@ void MainWindow::handle_resultRegistration(HttpRequestWorker *worker)
 
 void MainWindow::on_btnGetInformationUpdates_pressed()
 {
-    DialogLIstaDNIS dlg(this);
-    connect(&dlg, &DialogLIstaDNIS::requestRegistration, this, &MainWindow::on_RequestRegistration);
-    dlg.setDNIs(_dnisAsociado);
-    if (dlg.exec() == QDialog::Accepted)
+    _dlgListadoDNIS = new DialogLIstaDNIS(this);
+
+    connect(_dlgListadoDNIS, &DialogLIstaDNIS::requestRegistration, this, &MainWindow::on_RequestRegistration);
+    _dlgListadoDNIS->setDNIs(_dnisAsociado);
+    if (_dlgListadoDNIS->exec() == QDialog::Accepted)
     {
 #ifdef DEMO
         QString json = "[{\"id\":\"1\",\"dni\":\"22943587\",\"dominio\":\"ESK624\",\"asegurado\":\"diego\",\"cobertura\":\"w\",\"poliza\":\"asd\",\"vigencia_desde\":\"1\/1\/2015\",\"vigencia_hasta\":\"31\/12\/2015\",\"modelo\":\"ads\",\"anio\":\"asd\",\"chasis\":\"qe\",\"motor\":\"qwe\",\"medioPago\":\"qwe\",\"Productor\":\"qwe\"},{\"id\":\"2\",\"dni\":\"22943587\",\"dominio\":\"qwe\",\"asegurado\":\"diego\",\"cobertura\":\"654\",\"poliza\":\"89\",\"vigencia_desde\":\"654\",\"vigencia_hasta\":\"89\",\"modelo\":\"684\",\"anio\":\"684\",\"chasis\":\"684\",\"motor\":\"684\",\"medioPago\":\"684\",\"Productor\":\"648\"}]";
@@ -307,8 +331,8 @@ void MainWindow::on_btnGetInformationUpdates_pressed()
         jsonFile.open(QFile::WriteOnly);
         jsonFile.write(jsonDoc.toJson());
 #else
-        _dnisAsociado = dlg.dnis();
-        foreach (QString dni, _dnisAsociado)
+        _dnisAsociado = _dlgListadoDNIS->dnis();
+        foreach (QString dni, _dnisAsociado.keys())
         {
             QString url_str = "http://www.hbobroker.com.ar/smartcard/datos/" + dni;
 
@@ -317,9 +341,12 @@ void MainWindow::on_btnGetInformationUpdates_pressed()
             HttpRequestWorker *worker = new HttpRequestWorker(this);
             connect(worker, SIGNAL(on_execution_finished(HttpRequestWorker*)), this, SLOT(handle_resultUpdate(HttpRequestWorker*)));
             worker->execute(&input);
+            startSpinner();
         }
 #endif
     }
+    _dlgListadoDNIS->deleteLater();
+    _dlgListadoDNIS = NULL;
 }
 
 void MainWindow::on_btnCrane_pressed()
@@ -417,4 +444,17 @@ void MainWindow::setLogo(const QString &compania)
     }
     QPixmap pix(picName);
     ui->lblLogo->setPixmap(pix);
+}
+
+
+void MainWindow::startSpinner()
+{
+    ui->lblSpinner->setVisible(true);
+    _spinnerMovie->start();
+}
+
+void MainWindow::stopSpinner()
+{
+    _spinnerMovie->stop();
+    ui->lblSpinner->setVisible(false);
 }

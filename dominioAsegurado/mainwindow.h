@@ -7,6 +7,8 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 #include "screentools.h"
+#include "dialoglistadnis.h"
+#include <QMovie>
 
 namespace Ui {
 class MainWindow;
@@ -23,12 +25,13 @@ public:
 private:
     void loadJson(QJsonDocument &jsonDoc);
     void loadJsonSettings(QJsonDocument &jsonDoc);
-
     void setLogo(const QString &compania);
-private slots:
 
+    void startSpinner();
+    void stopSpinner();
+
+private slots:
     void on_comboBox_currentIndexChanged(const QString &arg1);
-    
     void handle_resultUpdate(HttpRequestWorker *worker);
     void handle_resultRegistration(HttpRequestWorker *worker);
     void on_btnGetInformationUpdates_pressed();
@@ -43,8 +46,11 @@ private:
     QMap<QString, QJsonObject> dominiosAsegurados;
     QString _fileDataLocation;
     QString _settingsLocation;
-    QStringList _dnisAsociado;
+    QMap <QString, QString> _dnisAsociado;
     ScreenTools _screenTools;
+    DialogLIstaDNIS *_dlgListadoDNIS;
+    QMovie* _spinnerMovie;
+
 };
 
 #endif // MAINWINDOW_H

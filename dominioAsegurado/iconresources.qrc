@@ -30,5 +30,6 @@
         <file alias="sancor">Sancor.png</file>
         <file alias="smg">smg.png</file>
         <file alias="zurich">zurich.png</file>
+        <file alias="spinner">spinner.gif</file>
     </qresource>
 </RCC>
