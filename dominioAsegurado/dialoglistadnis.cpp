@@ -1,5 +1,10 @@
 #include "dialoglistadnis.h"
 #include "ui_dialoglistadnis.h"
+#include <QMovie>
+
+/*ver
+http://doc.qt.io/qt-4.8/gestures-overview.html
+*/
 
 DialogLIstaDNIS::DialogLIstaDNIS(QWidget *parent) :
     QDialog(parent),
@@ -7,6 +12,14 @@ DialogLIstaDNIS::DialogLIstaDNIS(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowState(Qt::WindowMaximized);
+
+    ui->lblSpinner->clear();
+    _spinnerMovie = new QMovie(":/img/spinner");
+    ui->lblSpinner->setMovie(_spinnerMovie);
+    QString s = "QLabel { background-color : transparent; color : darkred; }";
+    ui->lblSpinner->setStyleSheet(s);
+    ui->lblSpinner->setVisible(false);
+
 }
 
 DialogLIstaDNIS::~DialogLIstaDNIS()
@@ -22,8 +35,10 @@ void DialogLIstaDNIS::on_btnAddDocument_released()
         if (addDNIToList(dni, ""))
         {
             emit requestRegistration(dni);
+            startSpinner();
         }
     }
+    ui->txtDocument->clear();
 }
 
 QMap<QString, QString> DialogLIstaDNIS::dnis()
@@ -46,6 +61,7 @@ void DialogLIstaDNIS::setDNIs(QMap<QString, QString> &documentos)
     {
         addDNIToList(dni, documentos[dni]);
     }
+    stopSpinner();
 }
 
 bool DialogLIstaDNIS::addDNIToList(const QString &dni, const QString &nombre)
@@ -61,4 +77,22 @@ bool DialogLIstaDNIS::addDNIToList(const QString &dni, const QString &nombre)
         return true;
     }
     return false;
+}
+
+void DialogLIstaDNIS::on_lstDocuments_itemDoubleClicked(QListWidgetItem *item)
+{
+    QString dni = item->data(Qt::UserRole).toString();
+    emit removeDNI(dni);
+}
+
+void DialogLIstaDNIS::startSpinner()
+{
+    ui->lblSpinner->setVisible(true);
+    _spinnerMovie->start();
+}
+
+void DialogLIstaDNIS::stopSpinner()
+{
+    _spinnerMovie->stop();
+    ui->lblSpinner->setVisible(false);
 }

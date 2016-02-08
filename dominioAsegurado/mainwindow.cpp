@@ -307,9 +307,61 @@ void MainWindow::handle_resultRegistration(HttpRequestWorker *worker)
     else
     {
         // an error occurred
-        QString msg = "Error: " + worker->error_str;
+        //QString msg = "Error: " + worker->error_str;
+        QString msg = "No se encuentra el DNI ingresado.";
         QMessageBox::information(this, "", msg);
     }
+}
+
+void MainWindow::on_removeDNI(const QString &DNI)
+{
+    _dnisAsociado.remove(DNI);
+    QFile jsonFile(_settingsLocation);
+    jsonFile.open(QFile::WriteOnly);
+
+    QJsonDocument json2Write;
+    QJsonArray array;
+    foreach (QString dni, _dnisAsociado.keys())
+    {
+        QJsonObject jsonObj;
+        jsonObj["dni"] = dni;
+        jsonObj["asegurado"] = _dnisAsociado[dni];
+        array.append(jsonObj);
+    }
+    json2Write.setArray(array);
+
+    jsonFile.write(json2Write.toJson());
+
+    if (_dlgListadoDNIS != NULL)
+    {
+        _dlgListadoDNIS->setDNIs(_dnisAsociado);
+    }
+
+    QStringList dominiosABorrar;
+    foreach (QString dominio, dominiosAsegurados.keys())
+    {
+        QJsonObject info = dominiosAsegurados[dominio];
+        if (info["dni"].toString() == DNI)
+        {
+            dominiosABorrar.append(dominio);
+        }
+    }
+    foreach (QString dominio, dominiosABorrar)
+    {
+        dominiosAsegurados.remove(dominio);
+    }
+    QFile jsonFile2(_fileDataLocation);
+    jsonFile2.open(QFile::WriteOnly);
+
+    QJsonDocument json2Write2;
+    QJsonArray array2;
+    foreach (QJsonObject jsonObj, dominiosAsegurados.values())
+    {
+        array2.append(jsonObj);
+    }
+    json2Write2.setArray(array);
+    jsonFile2.write(json2Write.toJson());
+    loadJson(json2Write2);
 }
 
 void MainWindow::on_btnGetInformationUpdates_pressed()
@@ -317,6 +369,7 @@ void MainWindow::on_btnGetInformationUpdates_pressed()
     _dlgListadoDNIS = new DialogLIstaDNIS(this);
 
     connect(_dlgListadoDNIS, &DialogLIstaDNIS::requestRegistration, this, &MainWindow::on_RequestRegistration);
+    connect(_dlgListadoDNIS, &DialogLIstaDNIS::removeDNI, this, &MainWindow::on_removeDNI);
     _dlgListadoDNIS->setDNIs(_dnisAsociado);
     if (_dlgListadoDNIS->exec() == QDialog::Accepted)
     {

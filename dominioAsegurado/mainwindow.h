@@ -40,7 +40,7 @@ private slots:
     void on_btnFeedback_pressed();
     void on_btnInformation_pressed();
     void on_RequestRegistration(const QString &DNI);
-
+    void on_removeDNI(const QString &DNI);
 private:
     Ui::MainWindow *ui;
     QMap<QString, QJsonObject> dominiosAsegurados;
