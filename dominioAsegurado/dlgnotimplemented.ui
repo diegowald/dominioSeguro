@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>No implementado</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>iconoHBO.png</normaloff>iconoHBO.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

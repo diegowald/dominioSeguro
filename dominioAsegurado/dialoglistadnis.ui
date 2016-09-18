@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Listado de documentos</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>iconoHBO.png</normaloff>iconoHBO.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -47,6 +51,13 @@
       <widget class="QPushButton" name="btnAddDocument">
        <property name="text">
         <string>Agregar</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnBorrar">
+       <property name="text">
+        <string>Borrar</string>
        </property>
       </widget>
      </item>

@@ -19,7 +19,7 @@ DialogLIstaDNIS::DialogLIstaDNIS(QWidget *parent) :
     QString s = "QLabel { background-color : transparent; color : darkred; }";
     ui->lblSpinner->setStyleSheet(s);
     ui->lblSpinner->setVisible(false);
-
+    on_lstDocuments_itemSelectionChanged();
 }
 
 DialogLIstaDNIS::~DialogLIstaDNIS()
@@ -79,12 +79,6 @@ bool DialogLIstaDNIS::addDNIToList(const QString &dni, const QString &nombre)
     return false;
 }
 
-void DialogLIstaDNIS::on_lstDocuments_itemDoubleClicked(QListWidgetItem *item)
-{
-    QString dni = item->data(Qt::UserRole).toString();
-    emit removeDNI(dni);
-}
-
 void DialogLIstaDNIS::startSpinner()
 {
     ui->lblSpinner->setVisible(true);
@@ -95,4 +89,25 @@ void DialogLIstaDNIS::stopSpinner()
 {
     _spinnerMovie->stop();
     ui->lblSpinner->setVisible(false);
+}
+
+void DialogLIstaDNIS::on_lstDocuments_itemSelectionChanged()
+{
+    if (ui->lstDocuments->selectedItems().count() > 0)
+    {
+        ui->btnBorrar->setEnabled(true);
+    }
+    else
+    {
+        ui->btnBorrar->setEnabled(false);
+    }
+}
+
+void DialogLIstaDNIS::on_btnBorrar_released()
+{
+    if (ui->lstDocuments->selectedItems().count() > 0)
+    {
+        QString dni = ui->lstDocuments->selectedItems().at(0)->data(Qt::UserRole).toString();
+        emit removeDNI(dni);
+    }
 }

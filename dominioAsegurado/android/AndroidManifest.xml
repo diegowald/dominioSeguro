@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
-<manifest package="ar.com.hbobroker.smartcard" xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="1.0" android:versionCode="6" android:installLocation="auto">
-    <application android:hardwareAccelerated="true" android:name="org.qtproject.qt5.android.bindings.QtApplication" android:label="SmartCard" android:icon="@drawable/icon">
-        <activity android:configChanges="keyboard" android:name="org.qtproject.qt5.android.bindings.QtActivity" android:label="SmartCard" android:screenOrientation="landscape" android:launchMode="singleTop">
+<manifest package="ar.com.hbobroker.smartcard" xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="1.0" android:versionCode="8" android:installLocation="auto">
+    <application android:hardwareAccelerated="true" android:name="org.qtproject.qt5.android.bindings.QtApplication" android:label="Transitar" android:icon="@drawable/icon">
+        <activity android:configChanges="keyboard" android:name="org.qtproject.qt5.android.bindings.QtActivity" android:label="Transitar" android:screenOrientation="landscape" android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-            <meta-data android:name="android.app.lib_name" android:value="SmartCard"/>
+            <meta-data android:name="android.app.lib_name" android:value="Transitar"/>
             <meta-data android:name="android.app.qt_sources_resource_id" android:resource="@array/qt_sources"/>
             <meta-data android:name="android.app.repository" android:value="default"/>
             <meta-data android:name="android.app.qt_libs_resource_id" android:resource="@array/qt_libs"/>

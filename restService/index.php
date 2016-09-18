@@ -36,7 +36,7 @@ $app->get('/datos/:dni', function($dni) use ($app) {
 
   // return JSON-encoded response body with query results
   echo json_encode(R::exportAll($datos));
-})->conditions(array('dni' => '([0-9]{7,8})'));
+})->conditions(array('dni' => '([0-9]{7,8}|[0-9]{11})'));
 
 $app->get('/datosMultiDNI/:dnis', function($dnis) use ($app) {
   // query database for all data with specific dni

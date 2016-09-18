@@ -22,7 +22,9 @@ public:
 private slots:
     void on_btnAddDocument_released();
 
-    void on_lstDocuments_itemDoubleClicked(QListWidgetItem *item);
+    void on_lstDocuments_itemSelectionChanged();
+
+    void on_btnBorrar_released();
 
 signals:
     void requestRegistration(const QString &DNI);

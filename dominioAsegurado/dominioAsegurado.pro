@@ -10,7 +10,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 android: QT += androidextras  #included only in Android builds
 
-TARGET = SmartCard
+TARGET = Transitar
 TEMPLATE = app
 
 
@@ -35,7 +35,7 @@ FORMS    += mainwindow.ui \
     dialoglistadnis.ui
 
 CONFIG += mobility
-MOBILITY = 
+MOBILITY =
 
 RESOURCES += \
     iconresources.qrc
